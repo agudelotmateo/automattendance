@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        <%= title %>
+    </title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+
+<body>
+    <h1>
+        <%= title %>
+    </h1>
+    <h4>Upload picture for processing</h4>
+    <form action="/upload" method="POST" enctype="multipart/form-data">
+        <input type="file" name="picture" accept="application/x-zip-compressed,image/*">
+        <input class="form-control" type="text" name="name" placeholder="Course unique name (code-group)">
+        <input class="btn btn-primary" type="submit" value="submit">
+    </form>
+    <p></p>
+    <h4>Add student to DB (one picture per student)</h4>
+    <form action="/createStudent" method="POST" enctype="multipart/form-data">
+        <input type="file" name="picture" accept="application/x-zip-compressed,image/*">
+        <input class="form-control" type="text" name="name" placeholder="Student name">
+        <input class="btn btn-primary" type="submit" value="submit">
+    </form>
+    <p></p>
+    <h4>Add course to DB</h4>
+    <form action="/createCourse" method="POST">
+        <input class="form-control" type="text" name="name" placeholder="Course unique name (code-group)">
+        <textarea name="students" cols="30" rows="10">List of students (e.g.: MateoAgudeloToro,JuanPabloAlcarazFlorez,LinaMariaBeltranDurango)</textarea>
+        <input class="btn btn-primary" type="submit" value="submit">
+    </form>
+    <h4>
+        <%= message %>
+    </h4>
+</body>
+
+</html>
