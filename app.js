@@ -2,6 +2,10 @@ const express = require('express');
 const bodyParser = require('body-parser')
 const fs = require('fs-extra');
 const multer = require('multer');
+const passport = require('passport');
+const session = require('express-session');
+const ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn();
+const Auth0Strategy = require('passport-auth0');
 const mongoose = require('mongoose');
 const User = require('./models/user');
 const Course = require('./models/course');
@@ -35,25 +39,124 @@ const upload = multer({
 	}
 }); // .single / .array
 
+const normalize = (str) => {
+	var name = '';
+	for (const letter of str)
+		if (letter == 'á' || letter == 'Á')
+			name += 'a';
+		else if (letter == 'é' || letter == 'É')
+			name += 'e';
+		else if (letter == 'í' || letter == 'Í')
+			name += 'i';
+		else if (letter == 'ó' || letter == 'Ó')
+			name += 'o';
+		else if (letter == 'ú' || letter == 'Ú')
+			name += 'u';
+		else if (letter == 'ñ' || letter == 'Ñ')
+			name += 'n';
+		else if (letter.match(/[A-Z]/i))
+			name += letter.toLowerCase();
+		else if (letter.match(/[a-z]/i))
+			name += letter;
+	return name.charAt(0).toUpperCase() + name.slice(1);
+}
+const getName = (str) => {
+	var name = '';
+	for (const word of str.split(' '))
+		name += normalize(word);
+	return name;
+}
+var loggedIn = false;
+
+passport.use(new Auth0Strategy(
+	{
+		domain: 'agudelotmateo.auth0.com',
+		clientID: 'SraODm2taygLXEVuXnF6fDhs5LyJudMW',
+		clientSecret: process.env.AUTH0_SECRET,
+		callbackURL: '/callback',
+		responseType: 'code',
+		scope: 'openid profile'
+	},
+	(accessToken, refreshToken, extraParam, profile, done) => {
+		name = getName(profile.displayName);
+		User.findOneAndUpdate({ name }, { name }, { upsert: true }, (err, user) => {
+			if (err)
+				return done(err, false);
+			if (user)
+				return done(null, user);
+			else
+				return done(null, false);
+		});
+	}
+));
+passport.serializeUser((user, done) => {
+	done(null, user);
+});
+passport.deserializeUser((user, done) => {
+	done(null, user);
+});
+
 const app = express();
 const port = process.env.PORT || 3000;
 app.use(bodyParser.urlencoded({ extended: false }))
 app.set('view engine', 'ejs');
+app.use(session(
+	{
+		secret: process.env.AUTH0_SECRET,
+		resave: true,
+		saveUninitialized: true
+	}
+));
+app.use(passport.initialize());
+app.use(passport.session());
 app.listen(port, () => {
-    console.log(`Server started on port ${port}!`);
+	console.log(`Server started on port ${port}!`);
 });
 
 
 app.get('/', (req, res, next) => {
-	res.render('index', { title: 'Test', message: '' });
+	res.render('index', { loggedIn });
 });
 
-app.post('/createStudent', upload.single('picture'), (req, res) => {
+app.get('/login', passport.authenticate('auth0', {}), (req, res) => {
+	res.redirect("/");
+});
+
+app.get('/callback', passport.authenticate('auth0', { failureRedirect: '/failure' }), (req, res) => {
+	loggedIn = true;
+	res.render('index', { loggedIn });
+});
+
+app.get('/failure', (req, res) => {
+	loggedIn = false;
+	res.render('index', { loggedIn });
+});
+
+app.get('/logout', (req, res) => {
+	req.logout();
+	loggedIn = false;
+	res.redirect('/');
+});
+
+app.get('/protected', ensureLoggedIn, (req, res) => {
+	res.render('index', { loggedIn });
+});
+
+app.get('/profile', ensureLoggedIn, (req, res) => {
+	res.render('profile', {
+		name: req.user.name,
+		image: req.user.image ? `data:${req.user.mimetype};base64,${Buffer(req.user.image).toString('base64')}` : '',
+		loggedIn
+	});
+});
+
+app.post('/updateUserPicture', ensureLoggedIn, upload.single('picture'), (req, res) => {
 	if (!req.file) {
 		res.render('index', { title: 'Test', message: 'Please select a picture to submit!' });
 	} else {
 		const user = new User({
 			name: req.body.name,
+			mimetype: req.file.mimetype,
 			image: Buffer(fs.readFileSync(req.file.path).toString('base64'), 'base64')
 		});
 		fs.remove(req.file.path, (err) => {
@@ -73,7 +176,7 @@ app.post('/createStudent', upload.single('picture'), (req, res) => {
 });
 
 app.post('/createCourse', (req, res) => {
-    console.log(req.body);
+	console.log(req.body);
 	const students = [];
 	for (const name of req.body.students.split(',')) {
 		students.push(name);
@@ -92,7 +195,7 @@ app.post('/createCourse', (req, res) => {
 	});
 });
 
-app.post('/upload', upload.single('picture'), (req, res) => {
+app.post('/uploadPicture', upload.single('picture'), (req, res) => {
 	if (!req.file) {
 		res.render('index', { title: 'Test', message: 'Please select a picture to submit!' });
 	} else {

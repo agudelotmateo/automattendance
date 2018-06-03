@@ -6,9 +6,11 @@ const UserSchema = mongoose.Schema({
         required: true,
         unique: true
     },
+    mimetype: {
+        type: String
+    },
     image: {
-        type: Buffer,
-        required: true
+        type: Buffer
     }
 }, { collection: 'users' });
 
