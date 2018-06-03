@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser')
+const flash = require('express-flash');
 const fs = require('fs-extra');
 const multer = require('multer');
 const passport = require('passport');
@@ -66,6 +67,9 @@ const getName = (str) => {
 		name += normalize(word);
 	return name;
 }
+const getImage = (user) => {
+	return user.image ? `data:${user.mimetype};base64,${Buffer(user.image).toString('base64')}` : '';
+}
 var loggedIn = false;
 
 passport.use(new Auth0Strategy(
@@ -99,6 +103,7 @@ passport.deserializeUser((user, done) => {
 const app = express();
 const port = process.env.PORT || 3000;
 app.use(bodyParser.urlencoded({ extended: false }))
+app.use(flash());
 app.set('view engine', 'ejs');
 app.use(session(
 	{
@@ -124,28 +129,27 @@ app.get('/login', passport.authenticate('auth0', {}), (req, res) => {
 
 app.get('/callback', passport.authenticate('auth0', { failureRedirect: '/failure' }), (req, res) => {
 	loggedIn = true;
+	req.flash('success', 'Welcome!');
 	res.render('index', { loggedIn });
 });
 
 app.get('/failure', (req, res) => {
 	loggedIn = false;
+	req.flash('danger', 'Failed to login... Please try again!');
 	res.render('index', { loggedIn });
 });
 
 app.get('/logout', (req, res) => {
 	req.logout();
 	loggedIn = false;
-	res.redirect('/');
-});
-
-app.get('/protected', ensureLoggedIn, (req, res) => {
+	req.flash('info', 'Successfully logged out!');
 	res.render('index', { loggedIn });
 });
 
 app.get('/profile', ensureLoggedIn, (req, res) => {
 	res.render('profile', {
 		name: req.user.name,
-		image: req.user.image ? `data:${req.user.mimetype};base64,${Buffer(req.user.image).toString('base64')}` : '',
+		image: getImage(req.user),
 		loggedIn
 	});
 });
