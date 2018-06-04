@@ -6,28 +6,24 @@ const multer = require('multer');
 const passport = require('passport');
 const session = require('express-session');
 const ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn();
-const Auth0Strategy = require('passport-auth0');
 const mongoose = require('mongoose');
 const User = require('./models/user');
 const Course = require('./models/course');
+const Auth0Strategy = require('passport-auth0');
 const AWS = require('aws-sdk');
 
 
-const url = `mongodb://${process.env.MLAB_DB_USER}:${process.env.MLAB_DB_PASSWORD}@ds243768.mlab.com:43768/automattendance`;
-mongoose.connect(url);
-mongoose.connection.on("connected", () => console.log("Connected to the " + url + " database!"));
+const mongoURI = `mongodb://${process.env.MLAB_DB_USER}:${process.env.MLAB_DB_PASSWORD}@ds243768.mlab.com:43768/automattendance`;
+mongoose.connect(mongoURI);
+mongoose.connection.on("connected", () => console.log("Connected to the database!"));
 mongoose.connection.on("error", err => console.log("Database connection error: " + err));
 
-AWS.config.update({
-	region: 'us-east-2'
-});
+AWS.config.update({ region: 'us-east-2' });
 const rekognition = new AWS.Rekognition();
 
 const storage = multer.diskStorage({
 	destination: './uploads/',
-	filename: (req, file, cb) => {
-		cb(null, new Date().toISOString() + '-' + file.originalname);
-	}
+	filename: (req, file, cb) => cb(null, new Date().toISOString() + '-' + file.originalname)
 });
 const upload = multer({
 	storage: storage,
@@ -38,9 +34,9 @@ const upload = multer({
 		else
 			cb('Only jpeg/jpg or png files!', false);
 	}
-}); // .single / .array
+});
 
-const normalize = (str) => {
+const normalize = (str, extended = false) => {
 	var name = '';
 	for (const letter of str)
 		if (letter == 'á' || letter == 'Á')
@@ -57,9 +53,9 @@ const normalize = (str) => {
 			name += 'n';
 		else if (letter.match(/[A-Z]/i))
 			name += letter.toLowerCase();
-		else if (letter.match(/[a-z]/i))
+		else if (letter.match(/[a-z]/i) || !isNaN(letter) || extended)
 			name += letter;
-	return name.charAt(0).toUpperCase() + name.slice(1);
+	return extended ? name : name.charAt(0).toUpperCase() + name.slice(1);
 }
 const getName = (str) => {
 	var name = '';
@@ -67,10 +63,11 @@ const getName = (str) => {
 		name += normalize(word);
 	return name;
 }
-const getImage = (user) => {
-	return user.image ? `data:${user.mimetype};base64,${Buffer(user.image).toString('base64')}` : '';
+const getImage = (image, mimetype) => {
+	return image ? `data:${mimetype};base64,${Buffer(image).toString('base64')}` : '';
 }
 var loggedIn = false;
+var currentId, currentName, currentImage, currentCourses;
 
 passport.use(new Auth0Strategy(
 	{
@@ -82,27 +79,38 @@ passport.use(new Auth0Strategy(
 		scope: 'openid profile'
 	},
 	(accessToken, refreshToken, extraParam, profile, done) => {
-		name = getName(profile.displayName);
-		User.findOneAndUpdate({ name }, { name }, { upsert: true }, (err, user) => {
+		User.findOne({ userId: profile.user_id }, (err, user) => {
 			if (err)
 				return done(err, false);
-			if (user)
+			if (user) {
+				currentId = user.userId;
+				currentName = user.name;
+				currentImage = getImage(user.image, user.mimetype);
 				return done(null, user);
-			else
-				return done(null, false);
+			} else {
+				const newUser = new User({
+					userId: profile.user_id,
+					name: getName(profile.user_id)
+				});
+				newUser.save((err, user, rows) => {
+					if (err)
+						return done(err, false);
+					currentId = user.userId;
+					currentName = user.name;
+					currentImage = getImage(user.image, user.mimetype);
+					return done(null, user);
+				});
+			}
 		});
 	}
 ));
-passport.serializeUser((user, done) => {
-	done(null, user);
-});
-passport.deserializeUser((user, done) => {
-	done(null, user);
-});
+passport.serializeUser((user, done) => done(null, user));
+passport.deserializeUser((user, done) => done(null, user));
 
 const app = express();
 const port = process.env.PORT || 3000;
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }))
 app.use(flash());
 app.set('view engine', 'ejs');
 app.use(session(
@@ -114,18 +122,12 @@ app.use(session(
 ));
 app.use(passport.initialize());
 app.use(passport.session());
-app.listen(port, () => {
-	console.log(`Server started on port ${port}!`);
-});
+app.listen(port, () => console.log(`Server started on port ${port}!`));
 
 
-app.get('/', (req, res, next) => {
-	res.render('index', { loggedIn });
-});
+app.get('/', (req, res, next) => res.render('index', { loggedIn }));
 
-app.get('/login', passport.authenticate('auth0', {}), (req, res) => {
-	res.redirect("/");
-});
+app.get('/login', passport.authenticate('auth0', {}), (req, res) => res.redirect("/"));
 
 app.get('/callback', passport.authenticate('auth0', { failureRedirect: '/failure' }), (req, res) => {
 	loggedIn = true;
@@ -148,55 +150,240 @@ app.get('/logout', (req, res) => {
 
 app.get('/profile', ensureLoggedIn, (req, res) => {
 	res.render('profile', {
-		name: req.user.name,
-		image: getImage(req.user),
+		name: currentName,
+		image: currentImage,
 		loggedIn
 	});
 });
 
-app.post('/updateUserPicture', ensureLoggedIn, upload.single('picture'), (req, res) => {
+app.post('/updateUser', ensureLoggedIn, upload.single('picture'), (req, res) => {
+	const newName = getName(req.body.name);
 	if (!req.file) {
-		res.render('index', { title: 'Test', message: 'Please select a picture to submit!' });
-	} else {
-		const user = new User({
-			name: req.body.name,
-			mimetype: req.file.mimetype,
-			image: Buffer(fs.readFileSync(req.file.path).toString('base64'), 'base64')
-		});
-		fs.remove(req.file.path, (err) => {
-			if (err) {
-				console.log(err);
-			}
-		});
-		user.save((err, doc, rows) => {
-			if (err) {
-				console.log(err);
-				res.render('index', { title: 'Test', message: "Student couldn't be created... (duplicated name?)" });
+		if (newName.length <= 0) {
+			req.flash('danger', 'Please enter a valid name!');
+			res.render('profile', {
+				name: currentName,
+				image: currentImage,
+				loggedIn
+			});
+		} else {
+			if (newName === currentName) {
+				req.flash('info', 'No changes were made');
+				res.render('profile', {
+					name: currentName,
+					image: currentImage,
+					loggedIn
+				});
 			} else {
-				res.render('index', { title: 'Test', message: 'Student created succesfully!!' });
+				// update name only
+				User.findOne({ name: newName }, (err, user) => {
+					if (err) {
+						console.log(err);
+						req.flash('danger', 'Failed to update the user information... Please try again!');
+						res.render('profile', {
+							name: currentName,
+							image: currentImage,
+							loggedIn
+						});
+					} else if (user) {
+						req.flash('danger', 'That name is already in use. Please try again using a different one!');
+						res.render('profile', {
+							name: currentName,
+							image: currentImage,
+							loggedIn
+						});
+					} else {
+						User.update({ userId: currentId }, { name: newName }, (err, user) => {
+							if (err) {
+								console.log(err);
+								req.flash('danger', 'Failed to update the user information... Please try again!');
+								res.render('profile', {
+									name: currentName,
+									image: currentImage,
+									loggedIn
+								});
+							} else {
+								currentName = newName;
+								req.flash('success', 'User information updated successfully!');
+								res.render('profile', {
+									name: newName,
+									image: currentImage,
+									loggedIn
+								});
+							}
+						});
+					}
+				});
 			}
+		}
+	} else {
+		const newMimetype = req.file.mimetype;
+		const newImage = Buffer(fs.readFileSync(req.file.path).toString('base64'), 'base64');
+		fs.remove(req.file.path, (err) => {
+			if (err)
+				console.log(err);
 		});
+		if (newName.length <= 0) {
+			// update picture only
+			User.update({ userId: currentId }, { mimetype: newMimetype, image: newImage }, (err, user) => {
+				if (err) {
+					console.log(err);
+					req.flash('danger', 'Failed to update the user information... Please try again!');
+					res.render('profile', {
+						name: currentName,
+						image: currentImage,
+						loggedIn
+					});
+				} else {
+					currentImage = getImage(newImage, newMimetype);
+					req.flash('success', 'User information updated successfully!');
+					res.render('profile', {
+						name: currentName,
+						image: getImage(newImage, newMimetype),
+						loggedIn
+					});
+				}
+			});
+		}
+		else {
+			if (newName === currentName) {
+				User.update({ userId: currentId }, { mimetype: newMimetype, image: newImage }, (err, user) => {
+					if (err) {
+						console.log(err);
+						req.flash('danger', 'Failed to update the user information... Please try again!');
+						res.render('profile', {
+							name: currentName,
+							image: currentImage,
+							loggedIn
+						});
+					} else {
+						currentImage = getImage(newImage, newMimetype);
+						req.flash('success', 'User information updated successfully!');
+						res.render('profile', {
+							name: currentName,
+							image: getImage(newImage, newMimetype),
+							loggedIn
+						});
+					}
+				});
+			} else {
+				// update both picture and name
+				User.findOne({ name: newName }, (err, user) => {
+					if (err) {
+						console.log(err);
+						req.flash('danger', 'Failed to update the user information... Please try again!');
+						res.render('profile', {
+							name: currentName,
+							image: currentImage,
+							loggedIn
+						});
+					} else if (user) {
+						req.flash('danger', 'That name is already in use. Please try again using a different one!');
+						res.render('profile', {
+							name: currentName,
+							image: currentImage,
+							loggedIn
+						});
+					} else {
+						User.update({ userId: currentId }, { name: newName, mimetype: newMimetype, image: newImage }, (err, user) => {
+							if (err) {
+								console.log(err);
+								req.flash('danger', 'Failed to update the user information... Please try again!');
+								res.render('profile', {
+									name: currentName,
+									image: currentImage,
+									loggedIn
+								});
+							} else {
+								currentName = newName;
+								currentImage = getImage(newImage, newMimetype);
+								req.flash('success', 'User information updated successfully!');
+								res.render('profile', {
+									name: newName,
+									image: getImage(newImage, newMimetype),
+									loggedIn
+								});
+							}
+						});
+					}
+				});
+			}
+		}
 	}
 });
 
-app.post('/createCourse', (req, res) => {
-	console.log(req.body);
-	const students = [];
-	for (const name of req.body.students.split(',')) {
-		students.push(name);
-	}
-	const course = new Course({
-		name: req.body.name,
-		students: students
-	});
-	course.save((err, doc, rows) => {
+app.get('/courses', ensureLoggedIn, (req, res) => {
+	Course.find({ teacher: currentId }, (err, courses) => {
 		if (err) {
-			console.log(err);
-			res.render('index', { title: 'Test', message: "Course couldn't be created... (duplicated name?)" });
+			req.flash('danger', 'Failed to load courses associated to this user');
+			res.render('index', { loggedIn });
 		} else {
-			res.render('index', { title: 'Test', message: 'Course created succesfully!!' });
+			currentCourses = courses;
+			res.render('courses', { courses, loggedIn });
 		}
 	});
+});
+
+app.post('/createCourse', ensureLoggedIn, (req, res) => {
+	const newCourseName = normalize(req.body.name, true);
+	if (newCourseName.length <= 0) {
+		req.flash('danger', 'Please enter a valid course name!');
+		res.render('courses', { courses: currentCourses, loggedIn });
+	} else {
+		const newFullname = `${newCourseName}@${currentId}`;
+		Course.findOne({ fullName: newFullname }, (err, course) => {
+			if (err) {
+				req.flash('danger', 'Failed to create the course associated to this user. Please try again!');
+				res.render('courses', { courses: currentCourses, loggedIn });
+			} else {
+				if (course) {
+					req.flash('danger', 'Course name already in use. Please try again using a different name!');
+					res.render('courses', { courses: currentCourses, loggedIn });
+				} else {
+					const newStudents = [];
+					const newStudentNames = req.body.students.split(',');
+					var left = newStudentNames.length;
+					var cleanName;
+					for (const newStudentName of newStudentNames) {
+						cleanNewStudentName = getName(newStudentName);
+						if (cleanNewStudentName.length > 0) {
+							newStudents.push(cleanNewStudentName);
+							--left;
+							if (left === 0) {
+								const newCourse = new Course({
+									name: newCourseName,
+									teacher: currentId,
+									fullName: newFullname,
+									students: newStudents
+								});
+								newCourse.save((err, course, rows) => {
+									if (err) {
+										console.log(err);
+										req.flash('danger', 'Failed to create the course. Please try again!');
+										res.render('courses', { courses: currentCourses, loggedIn });
+									} else {
+										Course.find({ teacher: currentId }, (err, courses) => {
+											if (err) {
+												req.flash('danger', 'Failed to load courses associated to this user');
+												res.render('index', { loggedIn });
+											} else {
+												currentCourses = courses;
+												req.flash('success', 'Course added successfully!');
+												res.render('courses', { courses, loggedIn });
+											}
+										});
+									}
+								});
+							}
+						} else {
+							req.flash('danger', 'Please enter a valid list of student names!');
+							res.render('courses', { courses: currentCourses, loggedIn });
+						}
+					}
+				}
+			}
+		});
+	}
 });
 
 app.post('/uploadPicture', upload.single('picture'), (req, res) => {

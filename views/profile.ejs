@@ -10,16 +10,16 @@
         <img src=<%= image %>>
     <%  } %>
 
-    <form action="/updateUserPicture" method="POST" enctype="multipart/form-data">
+    <form action="/updateUser" method="POST" enctype="multipart/form-data">
         <div class="form-group">
             <label for="username">Name</label>
-            <input type="text" class="form-control" name="name" id="username" placeholder=<%= name %>>
+            <input type="text" class="form-control" name="name" id="username" value=<%= name %>>
         </div>
         <div class="form-group">
             <label for="picture">Example file input</label>
             <input type="file" class="form-control-file" id="picture" name="picture" accept="application/x-zip-compressed,image/*">
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary">Update</button>
     </form>
 
     <% include partials/bootstrap.ejs %>
