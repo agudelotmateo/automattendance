@@ -143,8 +143,10 @@ app.get('/failure', (req, res) => {
 
 app.get('/logout', (req, res) => {
 	req.logout();
-	loggedIn = false;
-	req.flash('info', 'Successfully logged out!');
+	if (loggedIn) {
+		req.flash('info', 'Successfully logged out!');
+		loggedIn = false;
+	}
 	res.render('index', { loggedIn });
 });
 
@@ -168,7 +170,7 @@ app.post('/updateUser', ensureLoggedIn, upload.single('picture'), (req, res) => 
 			});
 		} else {
 			if (newName === currentName) {
-				req.flash('info', 'No changes were made');
+				req.flash('info', 'NO changes were made');
 				res.render('profile', {
 					name: currentName,
 					image: currentImage,
@@ -384,6 +386,38 @@ app.post('/createCourse', ensureLoggedIn, (req, res) => {
 			}
 		});
 	}
+});
+
+app.post('/deleteCourse', ensureLoggedIn, (req, res) => {
+	const newCourseName = normalize(req.body.name, true);
+	const newFullname = `${newCourseName}@${currentId}`;
+	Course.find({ fullName: newFullname }, (err, courses) => {
+		if (err) {
+			req.flash('danger', 'Failed to delete the course. Please try again!');
+			res.render('courses', { courses: currentCourses, loggedIn });
+		} else if (courses.length <= 0) {
+			req.flash('info', 'Such course does NOT exist. NO changes were made');
+			res.render('courses', { courses: currentCourses, loggedIn });
+		} else {
+			Course.deleteMany({ fullName: newFullname }, (err, course) => {
+				if (err) {
+					req.flash('danger', 'Failed to delete the course. Please try again!');
+					res.render('courses', { courses: currentCourses, loggedIn });
+				} else {
+					Course.find({ teacher: currentId }, (err, courses) => {
+						if (err) {
+							req.flash('danger', 'Failed to load courses associated to this user');
+							res.render('index', { loggedIn });
+						} else {
+							currentCourses = courses;
+							req.flash('success', 'Course deleted successfully!');
+							res.render('courses', { courses, loggedIn });
+						}
+					});
+				}
+			});
+		}
+	});
 });
 
 app.post('/uploadPicture', upload.single('picture'), (req, res) => {
