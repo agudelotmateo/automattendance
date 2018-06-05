@@ -3,8 +3,69 @@
 
 <% include partials/head.ejs %>
 
-<body>
+<body>  
+
     <% include partials/navbar.ejs %>
+    
+    
+    <div class="contenido_ggral">
+  
+        <div class="encabezado_asis">
+            <div class="ico_asis_cursos">
+            </div>
+            <div class="tit_asis_ppal">
+                <span class="titulo_content">Cursos: </span><br>
+            </div>
+        </div>        
+    
+        <div>        
+            <div class="caja_central">
+
+                <form action="/createCourse" method="POST" enctype="application/x-www-form-urlencoded">
+                
+                    <span class="titulo_caja">Añadir curso:</span><br><br>
+
+                    <span>Nombre del curso:</span><br>
+                    <input class="campo_captura" type="text" name="name" id="coursename"><br>
+                    
+                    <span>Agregue lista de estudiantes:</span><br>
+                    <textarea class="text_area_asis" name="students" id="students" cols="30" rows="5"></textarea>
+                    <br>
+                    <br>
+                    <div class="boton_enviar">         
+                    <input class="boton_asist" type="submit" value="Guardar">
+                    </div>
+                
+                </form>     
+        
+            </div>  
+            
+            <!-- <form action="/createCourse" method="POST" enctype="application/x-www-form-urlencoded">
+                <div class="form-group">
+                    <label for="coursename">Course name</label>
+                    <input type="text" class="form-control" name="name" id="coursename">
+                </div>
+                <div class="form-group">
+                    <label for="students">Name</label>
+                    <textarea name="students" id="students" cols="30" rows="10">List of students (e.g.: Mateo Agudelo Toro, Juan Pablo Alcaraz Florez, Lina Maria Beltran Durango)</textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Add course</button>
+            </form> -->
+
+            <br><br><br><br>   
+
+            <div></div>
+        </div>
+
+    </div> 
+
+    <% include partials/bootstrap.ejs %>
+	
+	<% include partials/footer.ejs %>
+    
+    
+    
+    <!-- <% include partials/navbar.ejs %>
 
     <h3>List of courses</h3>
     <ul>
@@ -35,7 +96,10 @@
         <button type="submit" class="btn btn-primary">DELETE course</button>
     </form>
 
-    <% include partials/bootstrap.ejs %>
+    <% include partials/bootstrap.ejs %> -->
+
+
+
 </body>
 
 </html>

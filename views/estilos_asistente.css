@@ -22,7 +22,6 @@
 	src: url('RobotoCondensed-Italic.eot') format('embedded-opentype'), url('RobotoCondensed-Italic.woff2') format('woff2'), url('RobotoCondensed-Italic.woff') format('woff'), url('RobotoCondensed-Italic.ttf') format('truetype'), url('RobotoCondensed-Italic.svg#OpenSans') format('svg');
 }
 
-
 body{
 	margin: 0;
 	font-family: 'RobotoCondensed-Regular', sans-serif;
@@ -293,6 +292,25 @@ body{
 	margin-bottom: 100px;
 	margin-left: auto;
 }
+
+
+
+
+
+/* *************************************** 
+TODO ESTO DEBE COPIARSE PARA RESPONSIVE 
+****************************************** */
+
+
+.titulo_caja{
+	font-weight: bold;
+}
+
+/* HASTA ACÁ SE COPIA */
+
+
+
+
 
 
 @media(max-width:767px){
