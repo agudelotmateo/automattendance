@@ -15,13 +15,18 @@
             <div class="tit_asis_ppal">
             <span class="titulo_content">Perfil: <%= name %></span><br>
             </div>
-        </div>        
+        </div>  
+
+        <div class="img_perfil">
+            <% if (image !== '') { %>
+                <img src=<%= image %>> 
+            <%  } %>
+        </div>         
 
         <div>          
             <div class="caja_central">            
 
-                <form action="/updateUser" method="POST" enctype="multipart/form-data">
-    
+                <form action="/updateUser" method="POST" enctype="multipart/form-data">    
                     <span class="titulo_caja">Actualizar información:</span><br><br>
 
                     <span>Nombre:</span><br>
@@ -31,14 +36,12 @@
                     <br><br><br>
                     <div class="boton_enviar">         
                         <input class="boton_asist" type="submit" value="Actualizar">
-                    </div>
-                
+                    </div>                
                 </form>
 
-            </div>
-            
-            <br><br><br><br>
-            
+            </div>    
+
+            <br><br><br><br>            
             <div></div>
         </div>
 
@@ -47,11 +50,6 @@
     <% include partials/bootstrap.ejs %>	
    
     <% include partials/footer.ejs %>
-
-
-    <!-- <% if (image !== '') { %>
-        <img src=<%= image %>>
-    <%  } %> -->
 
 </body>
 

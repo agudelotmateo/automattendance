@@ -294,16 +294,6 @@ body{
 }
 
 
-/* En base a estilo .campo_captura */
-.select_atta {
-	height: 37px;
-	width: 100%;
-	margin-top: 10px;
-	margin-bottom: 15px;
-	border-radius: 5px 5px 5px 5px;
-	-webkit-border-radius:  5px 5px 5px 5px;
-}
-
 
 
 
@@ -314,6 +304,27 @@ TODO ESTO DEBE COPIARSE PARA RESPONSIVE
 
 .titulo_caja{
 	font-weight: bold;
+}
+
+/* En base a estilo .campo_captura */
+.select_atta {
+	height: 37px;
+	width: 100%;
+	margin-top: 10px;
+	margin-bottom: 15px;
+	border-radius: 5px 5px 5px 5px;
+	-webkit-border-radius:  5px 5px 5px 5px;
+}
+
+.img_perfil {
+	margin: auto;
+	width: 30%;
+	padding-bottom: 40px;
+}
+
+.img_perfil img{
+	width: 100%;
+    height: auto;
 }
 
 /* HASTA ACÁ SE COPIA */
