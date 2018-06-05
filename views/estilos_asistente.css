@@ -337,6 +337,31 @@ TODO ESTO DEBE COPIARSE PARA RESPONSIVE
 	margin-bottom: 15px;
 }
 
+/* basado en .caja_central */
+.caja_central_registros{
+	background-color: #F9F8F3;
+	margin: auto;
+	width: 90%;
+	border: 1px solid #EAE7D5;
+	padding-top: 30px;
+	padding-right: 40px;
+	padding-bottom: 30px;
+	padding-left: 40px;
+	overflow: auto;
+	}
+
+table {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+tr:nth-child(even) {background-color: #e6e6e6;}
+
+th, td {
+    padding: 10px;
+	vertical-align: middle;
+}
+
 /* HASTA ACÁ SE COPIA */
 
 
