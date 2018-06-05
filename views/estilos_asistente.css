@@ -70,7 +70,7 @@ body{
     background-color: #55CAAA !important;
 	padding-left: 5px !important;
 	}
-	
+
 .nav-link:hover{
 	color: #FFFFB3 !important;
 	background-color: #55CAAA !important;
@@ -115,14 +115,14 @@ body{
 	padding-left: 20px;
 	clear: both;
 	}
-	
+
 .titulo_content{
 	font-size: 40px;
 	color: #4E4E4E;
 	text-decoration: none;
 	text-align: left;
 	}
-	
+
 .subtitulo{
 	font-size: 15px;
 	color: #4E4E4E;
@@ -166,7 +166,7 @@ body{
 	padding-bottom: 30px;
 	padding-left: 40px;
 	}
-	
+
 .campo_captura{
 	padding: 5px;
 	height: 37px;
@@ -216,7 +216,7 @@ body{
 	background-position: left center;
 	float: left;
 	height: 55px;
-	width: 60px;	
+	width: 60px;
 	}
 
 
@@ -226,7 +226,7 @@ body{
 	background-position: left center;
 	float: left;
 	height: 55px;
-	width: 60px;	
+	width: 60px;
 	}
 
 .ico_asis_cursos{
@@ -235,16 +235,16 @@ body{
 	background-position: left center;
 	float: left;
 	height: 55px;
-	width: 60px;	
+	width: 60px;
 	}
-	
+
 .ico_asis_buscar{
 	background-image: url(img/buscador.png);
 	background-repeat: no-repeat;
 	background-position: left center;
 	float: left;
 	height: 55px;
-	width: 60px;	
+	width: 60px;
 	}
 
 .grande{
@@ -281,7 +281,7 @@ body{
 	padding-left: 40px;
 	overflow: hidden;
 	}
-	
+
 .alert-info {
 	color: #0c5460;
 	background-color: #d1ecf1;
@@ -297,8 +297,8 @@ body{
 
 
 
-/* *************************************** 
-TODO ESTO DEBE COPIARSE PARA RESPONSIVE 
+/* ***************************************
+TODO ESTO DEBE COPIARSE PARA RESPONSIVE
 ****************************************** */
 
 
@@ -362,6 +362,12 @@ th, td {
 	vertical-align: middle;
 }
 
+/* en base a fin_contenido */
+.alert{
+	text-align: center;
+	margin: auto;
+}
+
 /* HASTA ACÁ SE COPIA */
 
 
@@ -419,7 +425,7 @@ body{
     background-color: #55CAAA !important;
 	padding-left: 5px !important;
 	}
-	
+
 .nav-link:hover{
 	color: #FFFFB3 !important;
 	background-color: #55CAAA !important;
@@ -464,14 +470,14 @@ body{
 	padding-left: 10px;
 	clear: both;
 	}
-	
+
 .titulo_content{
 	font-size: 30px;
 	color: #4E4E4E;
 	text-decoration: none;
 	text-align: left;
 	}
-	
+
 .subtitulo{
 	font-size: 15px;
 	color: #4E4E4E;
@@ -516,7 +522,7 @@ body{
 	padding-left: 20px;
 	}
 
-	
+
 .campo_captura{
 	padding: 5px;
 	height: 37px;
@@ -581,7 +587,7 @@ body{
 	float: left;
 	height: 28px;
 	width: 35px;
-	margin-top: 10px;	
+	margin-top: 10px;
 	}
 
 .ico_asis_cursos{
@@ -593,7 +599,7 @@ body{
 	width: 35px;
 	margin-top: 10px;
 	}
-	
+
 .ico_asis_buscar{
 	background-image: url(img/buscador_mov.png);
 	background-repeat: no-repeat;
@@ -601,7 +607,7 @@ body{
 	float: left;
 	height: 28px;
 	width: 35px;
-	margin-top: 10px;	
+	margin-top: 10px;
 	}
 
 .grande{
@@ -642,7 +648,7 @@ body{
 	padding-left: 40px;
 	overflow: hidden;
 	}
-	
+
 .alert-info {
 	color: #0c5460;
 	background-color: #d1ecf1;
