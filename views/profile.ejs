@@ -4,25 +4,53 @@
 <% include partials/head.ejs %>
 
 <body>
+
     <% include partials/navbar.ejs %>
 
-    <% if (image !== '') { %>
-        <img src=<%= image %>>
-    <%  } %>
+    <div class="contenido_ggral">
+  
+        <div class="encabezado_asis">
+            <div class="ico_asis_perfil">
+            </div>
+            <div class="tit_asis_ppal">
+            <span class="titulo_content">Perfil: <%= name %></span><br>
+            </div>
+        </div>  
 
-    <form action="/updateUser" method="POST" enctype="multipart/form-data">
-        <div class="form-group">
-            <label for="username">Name</label>
-            <input type="text" class="form-control" name="name" id="username" value=<%= name %>>
-        </div>
-        <div class="form-group">
-            <label for="picture">Face Picture</label>
-            <input type="file" class="form-control-file" id="picture" name="picture" accept="application/x-zip-compressed,image/*">
-        </div>
-        <button type="submit" class="btn btn-primary">Update</button>
-    </form>
+        <div class="img_perfil">
+            <% if (image !== '') { %>
+                <img src=<%= image %>> 
+            <%  } %>
+        </div>         
 
-    <% include partials/bootstrap.ejs %>
+        <div>          
+            <div class="caja_central">        
+                
+                <span class="titulo_caja">Actualizar información:</span><br><br>       
+
+                <form action="/updateUser" method="POST" enctype="multipart/form-data"> 
+                    <span>Nombre:</span><br>
+                    <input class="campo_captura" type="text" name="name" id="username" value=<%= name %>> <br>                    
+                    <span>Foto:</span><br>
+                    <input class="select_atta" type="file" name="picture" id="picture" accept="application/x-zip-compressed,image/*">
+                    <br><br><br>
+                    <div class="boton_enviar">         
+                        <input class="boton_asist" type="submit" value="Actualizar">
+                    </div>                
+                </form>
+
+            </div>    
+
+            <br><br><br><br>            
+            <div></div>
+        </div>
+
+    </div>
+
+    <% include partials/bootstrap.ejs %>	
+   
+    <% include partials/footer.ejs %>
+
 </body>
 
 </html>

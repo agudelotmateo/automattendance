@@ -4,9 +4,51 @@
 <% include partials/head.ejs %>
 
 <body>
+
     <% include partials/navbar.ejs %>
 
-    <h3>List of courses</h3>
+    <div class="contenido_ggral">
+  
+        <div class="encabezado_asis">
+            <div class="ico_asis_asistencia">
+            </div>
+            <div class="tit_asis_ppal">
+               <span class="titulo_content">Asistencia:</span><br>
+            </div>
+        </div>          
+         
+        <div>           
+            <div class="caja_central">
+
+                <span class="titulo_caja">Tomar asistencia:</span><br><br>
+           
+                <form action="/manageAttendance" method="POST" enctype="multipart/form-data">           
+                    <span>Curso:</span><br>
+
+                    <!-- cambiar, debe ser dropdown list con lista de cursos -->
+                    <input class="campo_captura" type="text" name="name" id="coursename"><br>               
+                    
+                    <span>Etiqueta registro:</span><br>
+                    <span class="explicacion_pequeña">Si la etiqueta ya fue utilizada, 
+                        solo se añadiran las personas presentes en la nueva foto a las anteriormente registradas.</span><br>
+                    <input class="campo_captura" type="text" name="label" id="picturelabel"><br>   
+                    
+                    <span>Foto:</span><br>
+                    <input class="select_atta" type="file" name="picture" id="picture" accept="application/x-zip-compressed,image/*">
+                    <br><br><br>
+                    <div class="boton_enviar">         
+                        <input class="boton_asist" type="submit" value="Enviar">
+                    </div>            
+                </form>      
+           </div>
+           
+           <br><br><br><br>           
+           <div></div>
+        </div>        
+    </div> 
+
+
+    <!-- <h3>List of courses</h3>
     <ul>
         <% for (const course of courses) { %>
             <li>
@@ -38,30 +80,12 @@
                 </td>
             </tr>
         <% } %>
-    </table>
-
-
-    <h3>Upload New Picture</h3>
-
-    <form action="/manageAttendance" method="POST" enctype="multipart/form-data">
-        <div class="form-group">
-            <label for="coursename">Course Name</label>
-            <input type="text" class="form-control" name="name" id="coursename">
-        </div>
-        <div class="form-group">
-            <label for="picturelabel">Label</label>
-            <p>If the label already exists, the faces found in this picture will be added to the ones already found under that
-                label (everything else is kept unchanged, even the date)</p>
-            <input type="text" class="form-control" name="label" id="picturelabel">
-        </div>
-        <div class="form-group">
-            <label for="picture">Students Picture</label>
-            <input type="file" class="form-control-file" id="picture" name="picture" accept="application/x-zip-compressed,image/*">
-        </div>
-        <button type="submit" class="btn btn-primary">Send</button>
-    </form>
+    </table> -->
 
     <% include partials/bootstrap.ejs %>
+
+    <% include partials/footer.ejs %>
+
 </body>
 
 </html>

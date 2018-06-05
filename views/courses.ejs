@@ -3,39 +3,87 @@
 
 <% include partials/head.ejs %>
 
-<body>
+<body>  
+
     <% include partials/navbar.ejs %>
+    
+    
+    <div class="contenido_ggral">
+  
+        <div class="encabezado_asis">
+            <div class="ico_asis_cursos">
+            </div>
+            <div class="tit_asis_ppal">
+                <span class="titulo_content">Cursos: </span><br>
+            </div>
+        </div>        
+    
+        <div>     
 
-    <h3>List of courses</h3>
-    <ul>
-        <% for (const course of courses) { %>
-            <li> <%= course.name %> </li>
-        <% } %>
-    </ul>
+            <div class="caja_central">
 
-    <h3>Course Administration</h3>
-    <form action="/createCourse" method="POST" enctype="application/x-www-form-urlencoded">
-        <div class="form-group">
-            <label for="coursename">Course name</label>
-            <input type="text" class="form-control" name="name" id="coursename">
-        </div>
-        <div class="form-group">
-            <label for="students">Name</label>
-            <textarea name="students" id="students" cols="30" rows="10">List of students (e.g.: Mateo Agudelo Toro, Juan Pablo Alcaraz Florez, Lina Maria Beltran Durango)</textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">Add course</button>
-    </form>
+                <span class="titulo_caja">Mis cursos:</span><br><br>
 
-    <h3>Delete course</h3>
-    <form action="/deleteCourse" method="POST" enctype="application/x-www-form-urlencoded">
-        <div class="form-group">
-            <label for="coursename">Course name</label>
-            <input type="text" class="form-control" name="name" id="coursename">
+                    <ul>
+                        <% for (const course of courses) { %>
+                            <li> <%= course.name %> </li>
+                        <% } %>
+                    </ul>
+               
+            </div>  
+
+            <br><br> 
+
+            <div class="caja_central">
+                
+                <span class="titulo_caja">Añadir curso:</span><br><br>
+
+                <form action="/createCourse" method="POST" enctype="application/x-www-form-urlencoded">
+                    <span>Nombre del curso:</span><br>
+                    <input class="campo_captura" type="text" name="name" id="coursename"><br>
+                    
+                    <span>Agregue lista de estudiantes:</span><br>
+                    <textarea class="text_area_asis" name="students" id="students" cols="30" rows="5"></textarea>
+                    <br>
+                    <br>
+                    <div class="boton_enviar">         
+                    <input class="boton_asist" type="submit" value="Guardar">
+                    </div>                
+                </form>     
+        
+            </div>  
+
+            <br><br> 
+
+            <div class="caja_central">
+                
+                <span class="titulo_caja">Eliminar curso:</span><br><br>
+
+                <form action="/deleteCourse" method="POST" enctype="application/x-www-form-urlencoded">
+
+                    <span>Nombre del curso:</span><br>
+                    <input class="campo_captura" type="text" name="name" id="coursename"><br>
+                    
+                    <br>
+                    <div class="boton_enviar">         
+                    <input class="boton_asist" type="submit" value="Eliminar">
+                    </div>
+                
+                </form>     
+        
+            </div>  
+
+            <br><br><br><br>   
+
+            <div></div>
         </div>
-        <button type="submit" class="btn btn-primary">DELETE course</button>
-    </form>
+
+    </div> 
 
     <% include partials/bootstrap.ejs %>
+	
+    <% include partials/footer.ejs %>
+    
 </body>
 
 </html>
