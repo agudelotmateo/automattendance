@@ -459,6 +459,27 @@ app.get('/attendance', ensureLoggedIn, (req, res) => {
 	});
 });
 
+app.get('/registers', ensureLoggedIn, (req, res) => {
+	Course.find({ teacher: currentId }, (err, courses) => {
+		if (err) {
+			console.log(err);
+			req.flash('danger', 'Failed to load courses associated to this user');
+			res.render('index', { loggedIn });
+		} else {
+			currentCourses = courses;
+			Attendance.find({teacher: currentId}, (err, attendances) => {
+				if (err) {
+					req.flash('danger', 'Failed to load attendance registers associated to this user');
+					res.render('index', { loggedIn });
+				} else {
+					currentAttendances = attendances;
+					res.render('registers', { courses, attendances, loggedIn });
+				}
+			});
+		}
+	});
+});
+
 app.post('/manageAttendance', ensureLoggedIn, upload.single('picture'), (req, res) => {
 	if (!req.file) {
 		req.flash('danger', 'Please select a picture to submit!');
