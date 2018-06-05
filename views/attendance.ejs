@@ -10,13 +10,35 @@
     <ul>
         <% for (const course of courses) { %>
             <li>
-                <%= course %>
+                <%= course.name %>
              </li>
         <% } %>
     </ul>
 
     
-
+    <h3>Attendances</h3>
+    <table>
+        <tr>
+            <th>Course</th>
+            <th>Label</th>
+            <th>Date</th>
+            <th>Students</th>
+        </tr>
+        <% for (const attendance of attendances) { %>
+            <tr>
+                <td><%= attendance.course %></td>
+                <td><%= attendance.label %></td>
+                <td><%= attendance.date %></td>
+                <td>
+                    <ul>
+                        <% for (const student of attendance.students) { %>
+                            <li> <%= student %> </li>                            
+                        <% } %>
+                    </ul>
+                </td>
+            </tr>
+        <% } %>
+    </table>
 
 
     <h3>Upload New Picture</h3>

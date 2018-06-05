@@ -78,7 +78,7 @@ const getImage = (image, mimetype) => {
 	return image ? `data:${mimetype};base64,${Buffer(image).toString('base64')}` : '';
 }
 var loggedIn = false;
-var currentId, currentName, currentImage, currentCourses;
+var currentId, currentName, currentImage, currentCourses, currentAttendances;
 
 passport.use(new Auth0Strategy(
 	{
@@ -443,7 +443,15 @@ app.get('/attendance', ensureLoggedIn, (req, res) => {
 			res.render('index', { loggedIn });
 		} else {
 			currentCourses = courses;
-			res.render('attendance', { courses: currentCourses, loggedIn });
+			Attendance.find({teacher: currentId}, (err, attendances) => {
+				if (err) {
+					req.flash('danger', 'Failed to load attendance registers associated to this user');
+					res.render('index', { loggedIn });
+				} else {
+					currentAttendances = attendances;
+					res.render('attendance', { courses, attendances, loggedIn });
+				}
+			});
 		}
 	});
 });
@@ -451,22 +459,22 @@ app.get('/attendance', ensureLoggedIn, (req, res) => {
 app.post('/manageAttendance', ensureLoggedIn, upload.single('picture'), (req, res) => {
 	if (!req.file) {
 		req.flash('danger', 'Please select a picture to submit!');
-		res.render('attendance', { courses: currentCourses, loggedIn });
+		res.render('attendance', { courses: currentCourses, attendances: currentAttendances, loggedIn });
 	} else {
 		const newCourseName = req.body.name.trim();
 		if (newCourseName.length <= 0) {
 			req.flash('danger', 'Please enter a valid course name!');
-			res.render('attendance', { courses: currentCourses, loggedIn });
+			res.render('attendance', { courses: currentCourses, attendances: currentAttendances, loggedIn });
 		} else {
 			const newCourseFullName = `${newCourseName}@${currentId}`;
 			Course.find({ fullName: newCourseFullName }, (err, courses) => {
 				if (err) {
 					console.log(err);
 					req.flash('danger', 'Failed to process the picture. Please try again!');
-					res.render('attendance', { courses: currentCourses, loggedIn });
+					res.render('attendance', { courses: currentCourses, attendances: currentAttendances, loggedIn });
 				} else if (courses.length <= 0) {
 					req.flash('info', 'Such course does NOT exist. NO processing was made');
-					res.render('attendance', { courses: currentCourses, loggedIn });
+					res.render('attendance', { courses: currentCourses, attendances: currentAttendances, loggedIn });
 				} else {
 					const image = Buffer(fs.readFileSync(req.file.path).toString('base64'), 'base64');
 					fs.remove(req.file.path, (err) => {
@@ -477,17 +485,17 @@ app.post('/manageAttendance', ensureLoggedIn, upload.single('picture'), (req, re
 					var studentNames = courses[0].students;
 					var left = studentNames.length;
 					for (const currentStudentName of studentNames) {
-						User.find({ name: currentStudentName }, (err, user) => {
+						User.find({ name: currentStudentName }, (err, users) => {
 							if (err) {
 								console.log(err);
-							} else if (user.length <= 0) {
+							} else if (users.length <= 0) {
 								--left;
 							} else {
 								rekognition.compareFaces(
 									{
 										SimilarityThreshold: 70,
 										TargetImage: { Bytes: image },
-										SourceImage: { Bytes: user[0].image }
+										SourceImage: { Bytes: users[0].image }
 									}, (err, data) => {
 										if (err) {
 											console.log(err);
@@ -502,23 +510,33 @@ app.post('/manageAttendance', ensureLoggedIn, upload.single('picture'), (req, re
 												if (err) {
 													console.log(err);
 													req.flash('danger', 'Failed to process the picture. Please try again!');
-													res.render('attendance', { courses: currentCourses, loggedIn });
+													res.render('attendance', { courses: currentCourses, attendances: currentAttendances, loggedIn });
 												} else {
 													if (attendances.length <= 0) {
 														const newAttendance = new Attendance({
 															course: newCourseName,
 															label: newLabel,
 															fullName: newAttendanceFullName,
-															students: foundStudentNames
+															students: foundStudentNames,
+															teacher: currentId
 														});
 														newAttendance.save((err, course, rows) => {
 															if (err) {
 																console.log(err);
 																req.flash('danger', 'Failed to process the picture. Please try again!');
-																res.render('attendance', { courses: currentCourses, loggedIn });
+																res.render('attendance', { courses: currentCourses, attendances: currentAttendances, loggedIn });
 															} else {
-																req.flash('success', `Picture processed successfully under new label (${newLabel})!`);
-																res.render('attendance', { courses: currentCourses, loggedIn });
+																Attendance.find({teacher: currentId}, (err, attendances) => {
+																	if (err) {
+																		console.log(err);
+																		req.flash('danger', 'Failed to process the picture. Please try again!');
+																		res.render('attendance', { courses: currentCourses, attendances: currentAttendances, loggedIn });
+																	} else {
+																		currentAttendances = attendances;
+																		req.flash('success', `Picture processed successfully under new label (${newLabel})!`);
+																		res.render('attendance', { courses: currentCourses, attendances, loggedIn });
+																	}
+																});
 															}
 														});
 													} else {
@@ -527,10 +545,18 @@ app.post('/manageAttendance', ensureLoggedIn, upload.single('picture'), (req, re
 															if (err) {
 																console.log(err);
 																req.flash('danger', 'Failed to process the picture. Please try again!');
-																res.render('attendance', { courses: currentCourses, loggedIn });
+																res.render('attendance', { courses: currentCourses, attendances: currentAttendances, loggedIn });
 															} else {
-																req.flash('success', `Picture processed successfully under existing label (${newLabel})!`);
-																res.render('attendance', { courses: currentCourses, loggedIn });
+																Attendance.find({teacher: currentId}, (err, attendances) => {
+																	if (err) {
+																		req.flash('danger', 'Failed to process the picture. Please try again!');
+																		res.render('attendance', { courses: currentCourses, attendances: currentAttendances, loggedIn });
+																	} else {
+																		currentAttendances = attendances;
+																		req.flash('success', `Picture processed successfully under existing label (${newLabel})!`);
+																		res.render('attendance', { courses: currentCourses, attendances, loggedIn });
+																	}
+																});
 															}
 														});
 													}

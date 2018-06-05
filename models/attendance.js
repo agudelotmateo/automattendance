@@ -18,6 +18,10 @@ const AttendanceSchema = mongoose.Schema({
         type: [String],
         required: true
     },
+    teacher: {
+        type: String,
+        required: true
+    },
     date: {
         type: Date,
         required: true,
