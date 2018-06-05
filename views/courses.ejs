@@ -18,7 +18,22 @@
             </div>
         </div>        
     
-        <div>        
+        <div>     
+
+            <div class="caja_central">
+
+                <span class="titulo_caja">Mis cursos:</span><br><br>
+
+                    <ul>
+                        <% for (const course of courses) { %>
+                            <li> <%= course.name %> </li>
+                        <% } %>
+                    </ul>
+               
+            </div>  
+
+            <br><br> 
+
             <div class="caja_central">
 
                 <form action="/createCourse" method="POST" enctype="application/x-www-form-urlencoded">
@@ -69,20 +84,8 @@
 
     <% include partials/bootstrap.ejs %>
 	
-	<% include partials/footer.ejs %>
+    <% include partials/footer.ejs %>
     
-    
-    
-    <!-- 
-    <h3>List of courses</h3>
-    <ul>
-        <% for (const course of courses) { %>
-            <li> <%= course.name %> </li>
-        <% } %>
-    </ul> -->
-
-
-
 </body>
 
 </html>
