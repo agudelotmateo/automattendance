@@ -14,19 +14,13 @@
           <ul class="navbar-nav ml-auto">
               <% if (loggedIn) { %>
                    <li class="nav-item">
-                      <a class="nav-link" href="/perfil"><span class="grande">&nbsp;I&nbsp;</span> Perfil <span class="grande">&nbsp;I&nbsp;</span></a>
-                  </li>
-                   <li class="nav-item">
-                      <a class="nav-link" href="/estudiantes"><span class="grande">&nbsp;I&nbsp;</span> Estudiantes <span class="grande">&nbsp;I&nbsp;</span></a>
+                      <a class="nav-link" href="/profile"><span class="grande">&nbsp;I&nbsp;</span> Perfil <span class="grande">&nbsp;I&nbsp;</span></a>
                   </li>
                   <li class="nav-item">
-                      <a class="nav-link" href="/asistencia"><span class="grande">&nbsp;I&nbsp;</span> Asistencia <span class="grande">&nbsp;I&nbsp;</span></a>
+                      <a class="nav-link" href="/attendance"><span class="grande">&nbsp;I&nbsp;</span> Asistencia <span class="grande">&nbsp;I&nbsp;</span></a>
                   </li>
                   <li class="nav-item">
-                      <a class="nav-link" href="/cursos"><span class="grande">&nbsp;I&nbsp;</span> Cursos <span class="grande">&nbsp;I&nbsp;</span></a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="/buscar"> <span class="grande">&nbsp;I&nbsp;</span> Buscar <span class="grande">&nbsp;I&nbsp;</span> </a>
+                      <a class="nav-link" href="/courses"><span class="grande">&nbsp;I&nbsp;</span> Cursos <span class="grande">&nbsp;I&nbsp;</span></a>
                   </li>
                    <li class="nav-item">
                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -53,38 +47,6 @@
       </div>    
   <% } %>
 
-<!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">Automatic Attendance</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-        aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav ml-auto">
-            <% if (loggedIn) { %>
-                <li class="nav-item">
-                    <a class="nav-link" href="/attendance">Attendance</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/profile">Profile</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/courses">Courses</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/logout">Logout</a>
-                </li>
-            <% } else { %>
-                <li class="nav-item">
-                    <a class="nav-link" href="/login">Login</a>
-                </li>
-            <%  } %>
-        </ul>
-    </div>
-</nav>
-
-<p></p>
 
 <% if(messages.danger) { %>
     <div class="alert alert-danger alert alert-dismissible fade show" role="alert">
@@ -111,4 +73,4 @@
             <span aria-hidden="true">&times;</span>
         </button>
     </div>    
-<% } %> -->
+<% } %>
