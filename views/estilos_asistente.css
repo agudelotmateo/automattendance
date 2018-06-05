@@ -294,6 +294,16 @@ body{
 }
 
 
+/* En base a estilo .campo_captura */
+.select_atta {
+	height: 37px;
+	width: 100%;
+	margin-top: 10px;
+	margin-bottom: 15px;
+	border-radius: 5px 5px 5px 5px;
+	-webkit-border-radius:  5px 5px 5px 5px;
+}
+
 
 
 
