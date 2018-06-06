@@ -30,7 +30,7 @@ body{
 	color: #4E4E4E;
 }
 
-.nombre_aplica{
+.nombre_aplica {
 	background-color: #777777;
 	background-image: url(img/fond_asitencia.png)!important;
 	background-repeat: repeat;
@@ -41,9 +41,9 @@ body{
 	background-position: center center;
 	overflow: hidden;
 	margin: auto;
-	}
+}
 
-.titulo_asist{
+.titulo_asist {
 	text-align: center;
 	text-decoration: none;
 	background-image: url(img/titulo.png) !important;
@@ -53,7 +53,7 @@ body{
 	width: 493px;
 	overflow: hidden;
 	margin: auto;
-	}
+}
 
 .bg-dark {
     background-color: #55CAAA !important;
@@ -62,34 +62,34 @@ body{
 	width: 960px;
 }
 
-.nav-link{
+.nav-link {
 	font-family: 'RobotoCondensed-Regular', sans-serif;
 	font-size: 16px;
 	color: #FFF !important;
 	text-decoration: none;
     background-color: #55CAAA !important;
 	padding-left: 5px !important;
-	}
+}
 
-.nav-link:hover{
+.nav-link:hover {
 	color: #FFFFB3 !important;
 	background-color: #55CAAA !important;
-	}
+}
 
-.espacio{
+.espacio {
 	background-color: #FFF;
 	margin: auto;
 	height: 30px;
 	width: 960px;
 	overflow: hidden;
-	}
+}
 
-.contenido_ggenal{
+.contenido_ggenal {
 	background-color: #FFF;
 	margin: auto;
 	width: 960px;
 	overflow: hidden;
-	}
+}
 
 .fin_pagina{
 	font-family: 'RobotoCondensed-Regular', sans-serif;
@@ -114,21 +114,21 @@ body{
 	padding-bottom: 40px;
 	padding-left: 20px;
 	clear: both;
-	}
+}
 
 .titulo_content{
 	font-size: 40px;
 	color: #4E4E4E;
 	text-decoration: none;
 	text-align: left;
-	}
+}
 
 .subtitulo{
 	font-size: 15px;
 	color: #4E4E4E;
 	text-decoration: none;
 	text-align: left;
-	}
+}
 
 .boton_asist{
 	font-family: 'RobotoCondensed-Regular', sans-serif;
@@ -148,13 +148,13 @@ body{
 	-webkit-border-radius: 5px 5px 5px 5px;
 	text-transform: lowercase;
 	letter-spacing: 3px;
-	}
+}
 
 .boton_enviar{
 	text-align: center;
 	margin: auto;
 	width: 100%;
-	}
+}
 
 .caja_central{
 	background-color: #F9F8F3;
@@ -165,7 +165,7 @@ body{
 	padding-right: 40px;
 	padding-bottom: 30px;
 	padding-left: 40px;
-	}
+}
 
 .campo_captura{
 	padding: 5px;
@@ -176,7 +176,7 @@ body{
 	border: 1px solid #EAE7D5;
 	border-radius: 5px 5px 5px 5px;
 	-webkit-border-radius:  5px 5px 5px 5px;
-	}
+}
 
 .text_area_asis{
 	padding: 5px;
@@ -186,7 +186,7 @@ body{
 	border: 1px solid #EAE7D5;
 	border-radius: 5px 5px 5px 5px;
 	-webkit-border-radius:  5px 5px 5px 5px;
-	}
+}
 
 .encabezado_asis{
 	width: 90%;
@@ -195,7 +195,7 @@ body{
 	margin-right: auto;
 	margin-bottom: 50px;
 	margin-left: auto;
-	}
+}
 
 .ico_asis_estudiante{
 	background-image: url(img/estudiante.png);
@@ -204,11 +204,11 @@ body{
 	float: left;
 	width: 60px;
 	height: 55px;
-	}
+}
 
 .tit_asis_ppal{
 	float: left;
-	}
+}
 
 .ico_asis_perfil{
 	background-image: url(img/perfil.png);
@@ -217,7 +217,7 @@ body{
 	float: left;
 	height: 55px;
 	width: 60px;
-	}
+}
 
 
 .ico_asis_asistencia{
@@ -227,7 +227,7 @@ body{
 	float: left;
 	height: 55px;
 	width: 60px;
-	}
+}
 
 .ico_asis_cursos{
 	background-image: url(img/cursos.png);
@@ -236,7 +236,7 @@ body{
 	float: left;
 	height: 55px;
 	width: 60px;
-	}
+}
 
 .ico_asis_buscar{
 	background-image: url(img/buscador.png);
@@ -245,12 +245,12 @@ body{
 	float: left;
 	height: 55px;
 	width: 60px;
-	}
+}
 
 .grande{
 	font-family: 'RobotoCondensed-light', sans-serif;
 	color: #777777;
-	}
+}
 
 .radio_botton_1{
 	float: left;
@@ -261,14 +261,14 @@ body{
 	padding-right: 15px;
 	padding-bottom: 15px;
 	padding-left: 15px;
-	}
+}
 
 .radio_botton_2{
 	float: left;
 	padding-right: 15px;
 	padding-bottom: 15px;
 	padding-left: 25px;
-	}
+}
 
 .caja_central_buscar{
 	background-color: #F9F8F3;
@@ -280,7 +280,11 @@ body{
 	padding-bottom: 30px;
 	padding-left: 40px;
 	overflow: hidden;
-	}
+}
+
+/* **************************************
+Cambios para responsive
+*************************************** */
 
 .alert-danger {
 	width: 50%;
@@ -288,6 +292,9 @@ body{
 	margin-right: auto;
 	margin-bottom: auto;
 	margin-left: auto;
+	text-align: center;
+	width: 960px;
+	border-radius: 0rem;
 }
 
 .alert-success {
@@ -296,6 +303,9 @@ body{
 	margin-right: auto;
 	margin-bottom: auto;
 	margin-left: auto;
+	text-align: center;
+	width: 960px;
+	border-radius: 0rem;
 }
 
 .alert-info {
@@ -307,8 +317,12 @@ body{
 	margin-right: auto;
 	margin-bottom: auto;
 	margin-left: auto;
+	text-align: center;
+	width: 960px;
+	border-radius: 0rem;
 }
 
+/* hasta acá hay cambios */
 
 .titulo_caja{
 	font-weight: bold;
