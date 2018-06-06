@@ -117,7 +117,7 @@ Modificar en responsive
 	width: 960px;
 	overflow: hidden;
 	margin: auto;
-	padding-top: 25px; /* 40 -> 25 */
+	padding-top: 25px; 
 	padding-right: 20px;
 	padding-bottom: 40px;
 	padding-left: 20px;
@@ -505,7 +505,7 @@ th, td {
 		width: 100%;
 		overflow: hidden;
 		margin: auto;
-		padding-top: 10px;
+		padding-top: 15px;
 		padding-right: 10px;
 		padding-bottom: 10px;
 		padding-left: 10px;
@@ -682,6 +682,20 @@ th, td {
 		font-weight: bold;
 	}
 
+	.titulo_caja_home {
+		text-align: center;
+	}
+	
+	.contenido_caja_home {
+		text-align: center;
+	}
+	
+	.separador_navbar {
+		height: 25px;
+		width: 100%;  /* de contenido general */
+		background-color: #FFF;
+	}
+
 	.select_atta {
 		height: 37px;
 		width: 100%;
@@ -704,7 +718,7 @@ th, td {
 	}
 
 	.alert-danger {
-		width: 90%;
+		width: 100%;
 		margin-top: auto;
 		margin-right: auto;
 		margin-bottom: auto;
@@ -712,7 +726,7 @@ th, td {
 	}
 
 	.alert-success {
-		width: 90%;
+		width: 100%;
 		margin-top: auto;
 		margin-right: auto;
 		margin-bottom: auto;
@@ -723,7 +737,7 @@ th, td {
 		color: #0c5460;
 		background-color: #d1ecf1;
 		border-color: #bee5eb;
-		width: 90%;
+		width: 100%;
 		margin-top: auto;
 		margin-right: auto;
 		margin-bottom: auto;
