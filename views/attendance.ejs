@@ -24,8 +24,9 @@
            
                 <form action="/manageAttendance" method="POST" enctype="multipart/form-data">           
                     <span>Curso:</span><br>
+                    <!-- <input class="campo_captura" type="text" name="name" id="coursename"><br>  -->
                     <div class="dropdown">
-                        <select>
+                        <select id="coursename">
                             <% for (const course of courses) { %>
                                 <option value="<%= course.name %>">
                                     <%= course.name %>

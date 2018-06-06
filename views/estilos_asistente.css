@@ -293,20 +293,10 @@ body{
 	margin-left: auto;
 }
 
-
-
-
-
-/* ***************************************
-TODO ESTO DEBE COPIARSE PARA RESPONSIVE
-****************************************** */
-
-
 .titulo_caja{
 	font-weight: bold;
 }
 
-/* En base a estilo .campo_captura */
 .select_atta {
 	height: 37px;
 	width: 100%;
@@ -337,7 +327,6 @@ TODO ESTO DEBE COPIARSE PARA RESPONSIVE
 	margin-bottom: 15px;
 }
 
-/* basado en .caja_central */
 .caja_central_registros{
 	background-color: #F9F8F3;
 	margin: auto;
@@ -348,7 +337,7 @@ TODO ESTO DEBE COPIARSE PARA RESPONSIVE
 	padding-bottom: 30px;
 	padding-left: 40px;
 	overflow: auto;
-	}
+}
 
 table {
 	border-collapse: collapse;
@@ -362,18 +351,10 @@ th, td {
 	vertical-align: middle;
 }
 
-/* en base a fin_contenido */
 .alert{
 	text-align: center;
 	margin: auto;
 }
-
-/* HASTA ACÁ SE COPIA */
-
-
-
-
-
 
 @media(max-width:767px){
 
@@ -637,6 +618,19 @@ body{
 	padding-top: 15px;
 	}
 
+.titulo_caja{
+	font-weight: bold;
+}
+
+.select_atta {
+	height: 37px;
+	width: 100%;
+	margin-top: 10px;
+	margin-bottom: 15px;
+	border-radius: 5px 5px 5px 5px;
+	-webkit-border-radius:  5px 5px 5px 5px;
+}
+
 .caja_central_buscar{
 	background-color: #F9F8F3;
 	margin: auto;
@@ -647,7 +641,7 @@ body{
 	padding-bottom: 30px;
 	padding-left: 40px;
 	overflow: hidden;
-	}
+}
 
 .alert-info {
 	color: #0c5460;
@@ -658,6 +652,57 @@ body{
 	margin-right: auto;
 	margin-bottom: 100px;
 	margin-left: auto;
+}
+
+
+.img_perfil {
+	margin: auto;
+	width: 20%;
+	padding-bottom: 20px;
+}
+
+.img_perfil img {
+	width: 100%;
+    height: auto;
+}
+
+.explicacion_pequeña {
+	font-size: 12px;
+	color: rgb(134, 134, 134);
+}
+
+.dropdown {
+	margin-top: 10px;
+	margin-bottom: 15px;
+}
+
+.caja_central_registros{
+	background-color: #F9F8F3;
+	margin: auto;
+	width: 90%;
+	border: 1px solid #EAE7D5;
+	padding-top: 30px;
+	padding-right: 5px;
+	padding-bottom: 30px;
+	padding-left: 5px;
+	overflow: auto;
+}
+
+table {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+tr:nth-child(even) {background-color: #e6e6e6;}
+
+th, td {
+    padding: 10px;
+	vertical-align: middle;
+}
+
+.alert{
+	text-align: center;
+	margin: auto;
 }
 
 }
