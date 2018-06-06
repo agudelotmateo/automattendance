@@ -363,8 +363,12 @@ app.post('/createCourse', ensureLoggedIn, (req, res) => {
 					async.each(req.body.students.split(','), (newStudentName, callback) => {
 						const cleanNewStudentName = getName(newStudentName);
 						if (cleanNewStudentName.length > 0) {
+							if (cleanNewStudentName.length > 20) {
+								callback('Please use names with lenght smaller than 20 characters!')
+							} else {
 							newStudents.push(cleanNewStudentName);
 							callback();
+							}
 						} else
 							callback('Please enter a valid list of student names!');
 					}, (err) => {
