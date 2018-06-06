@@ -24,11 +24,24 @@
 
                 <span class="titulo_caja">Mis cursos:</span><br><br>
 
-                    <ul>
-                        <% for (const course of courses) { %>
-                            <li> <%= course.name %> </li>
-                        <% } %>
-                    </ul>
+                <table>
+                    <tr>
+                        <th>Curso</th>
+                        <th>Estudiantes</th>
+                    </tr>
+                    <% for (const course of courses) { %>
+                        <tr>
+                            <td><%= course.name %></td>
+                            <td>
+                                <ul>
+                                    <% for (const student of course.students) { %>
+                                        <li> <%= student %> </li>                            
+                                    <% } %>
+                                </ul>
+                            </td>
+                        </tr>
+                    <% } %>
+                </table>   
                
             </div>  
 
