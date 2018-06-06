@@ -62,7 +62,15 @@
                 <form action="/deleteCourse" method="POST" enctype="application/x-www-form-urlencoded">
 
                     <span>Nombre del curso:</span><br>
-                    <input class="campo_captura" type="text" name="name" id="coursename"><br>
+                    <div class="dropdown">
+                        <select name="name" id="coursename">
+                            <% for (const course of courses) { %>
+                                <option value="<%= course.name %>">
+                                    <%= course.name %>
+                                </option>
+                            <% } %>
+                        </select>
+                    </div>
                     
                     <br>
                     <div class="boton_enviar">         
