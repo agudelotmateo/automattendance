@@ -282,16 +282,33 @@ body{
 	overflow: hidden;
 	}
 
+.alert-danger {
+	width: 50%;
+	margin-top: auto;
+	margin-right: auto;
+	margin-bottom: auto;
+	margin-left: auto;
+}
+
+.alert-success {
+	width: 50%;
+	margin-top: auto;
+	margin-right: auto;
+	margin-bottom: auto;
+	margin-left: auto;
+}
+
 .alert-info {
 	color: #0c5460;
 	background-color: #d1ecf1;
 	border-color: #bee5eb;
 	width: 50%;
-	margin-top: 100px;
+	margin-top: auto;
 	margin-right: auto;
-	margin-bottom: 100px;
+	margin-bottom: auto;
 	margin-left: auto;
 }
+
 
 .titulo_caja{
 	font-weight: bold;
@@ -349,11 +366,6 @@ tr:nth-child(even) {background-color: #e6e6e6;}
 th, td {
     padding: 10px;
 	vertical-align: middle;
-}
-
-.alert{
-	text-align: center;
-	margin: auto;
 }
 
 @media(max-width:767px){
@@ -643,17 +655,32 @@ body{
 	overflow: hidden;
 }
 
+.alert-danger {
+	width: 90%;
+	margin-top: auto;
+	margin-right: auto;
+	margin-bottom: auto;
+	margin-left: auto;
+}
+
+.alert-success {
+	width: 90%;
+	margin-top: auto;
+	margin-right: auto;
+	margin-bottom: auto;
+	margin-left: auto;
+}
+
 .alert-info {
 	color: #0c5460;
 	background-color: #d1ecf1;
 	border-color: #bee5eb;
 	width: 90%;
-	margin-top: 100px;
+	margin-top: auto;
 	margin-right: auto;
-	margin-bottom: 100px;
+	margin-bottom: auto;
 	margin-left: auto;
 }
-
 
 .img_perfil {
 	margin: auto;
@@ -700,9 +727,5 @@ th, td {
 	vertical-align: middle;
 }
 
-.alert{
-	text-align: center;
-	margin: auto;
-}
 
 }
