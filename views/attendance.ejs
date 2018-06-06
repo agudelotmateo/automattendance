@@ -22,11 +22,10 @@
 
                 <span class="titulo_caja">Tomar asistencia:</span><br><br>
            
-                <form action="/manageAttendance" method="POST" enctype="multipart/form-data">           
+                <form action="/manageAttendance" method="POST" enctype="multipart/form-data" id="attendance_form">           
                     <span>Curso:</span><br>
-                    <!-- <input class="campo_captura" type="text" name="name" id="coursename"><br>  -->
                     <div class="dropdown">
-                        <select id="coursename">
+                        <select name="name" id="coursename">
                             <% for (const course of courses) { %>
                                 <option value="<%= course.name %>">
                                     <%= course.name %>
