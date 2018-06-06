@@ -108,10 +108,6 @@ body{
 	width: 960px;
 }
 
-/* *************************************
-Modificar en responsive 
-*************************************** */
-
 .contenido_ggral {
 	background-color: #FFF;
 	width: 960px;
@@ -123,8 +119,6 @@ Modificar en responsive
 	padding-left: 20px;
 	clear: both;
 }
-
-/* Hasta acá la modificación */
 
 .titulo_content{
 	font-size: 40px;
@@ -292,10 +286,6 @@ Modificar en responsive
 	overflow: hidden;
 }
 
-/* **************************************
-Cambios para responsive
-*************************************** */
-
 .alert-danger {
 	width: 50%;
 	margin-top: auto;
@@ -332,15 +322,9 @@ Cambios para responsive
 	border-radius: 0rem;
 }
 
-/* hasta acá hay cambios */
-
 .titulo_caja {
 	font-weight: bold;
 }
-
-/* ****************************
-Nuevo para responsive 
-******************************* */
 
 .titulo_caja_home {
 	text-align: center;
@@ -352,11 +336,9 @@ Nuevo para responsive
 
 .separador_navbar {
 	height: 25px;
-	width: 960px;  /* de contenido general */
+	width: 960px;
 	background-color: #FFF;
 }
-
-/* hasta acá es nuevo */
 
 .select_atta {
 	height: 37px;
