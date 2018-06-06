@@ -20,28 +20,36 @@
         <div>   
             <div class="caja_central_registros"> 
 
-                <table>
-                    <tr>
-                        <th>Curso</th>
-                        <th>Etiqueta</th>
-                        <th>Fecha</th>
-                        <th>Asistentes</th>
-                    </tr>
-                    <% for (const attendance of attendances) { %>
+                <%if (attendances.length <= 0) { %>
+                    
+                    <span>No has realizado ningún registro de asistencia</span>
+
+                <% } else { %>
+                 
+                    <table>
                         <tr>
-                            <td><%= attendance.course %></td>
-                            <td><%= attendance.label %></td>
-                            <td><%= attendance.date %></td>
-                            <td>
-                                <ul>
-                                    <% for (const student of attendance.students) { %>
-                                        <li> <%= student %> </li>                            
-                                    <% } %>
-                                </ul>
-                            </td>
+                            <th>Curso</th>
+                            <th>Etiqueta</th>
+                            <th>Fecha</th>
+                            <th>Asistentes</th>
                         </tr>
-                    <% } %>
-                </table>           
+                        <% for (const attendance of attendances) { %>
+                            <tr>
+                                <td><%= attendance.course %></td>
+                                <td><%= attendance.label %></td>
+                                <td><%= attendance.date %></td>
+                                <td>
+                                    <ul>
+                                        <% for (const student of attendance.students) { %>
+                                            <li> <%= student %> </li>                            
+                                        <% } %>
+                                    </ul>
+                                </td>
+                            </tr>
+                        <% } %>
+                    </table>     
+                
+                <% } %>
            
                 <br><br><br><br>           
                 <div></div>
