@@ -7,6 +7,7 @@ const passport = require('passport');
 const session = require('express-session');
 const ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn();
 const mongoose = require('mongoose');
+const async = require('async');
 const User = require('./models/user');
 const Course = require('./models/course');
 const Attendance = require('./models/attendance');
@@ -359,45 +360,45 @@ app.post('/createCourse', ensureLoggedIn, (req, res) => {
 					res.render('courses', { courses: currentCourses, loggedIn });
 				} else {
 					const newStudents = [];
-					const newStudentNames = req.body.students.split(',');
-					var left = newStudentNames.length;
-					var cleanName;
-					for (const newStudentName of newStudentNames) {
-						cleanNewStudentName = getName(newStudentName);
+					async.each(req.body.students.split(','), (newStudentName, callback) => {
+						const cleanNewStudentName = getName(newStudentName);
 						if (cleanNewStudentName.length > 0) {
 							newStudents.push(cleanNewStudentName);
-							if (--left === 0) {
-								const newCourse = new Course({
-									name: newCourseName,
-									teacher: currentId,
-									fullName: newFullname,
-									students: newStudents
-								});
-								newCourse.save((err, course, rows) => {
-									if (err) {
-										console.log(err);
-										req.flash('danger', 'Failed to create the course. Please try again!');
-										res.render('courses', { courses: currentCourses, loggedIn });
-									} else {
-										Course.find({ teacher: currentId }, (err, courses) => {
-											if (err) {
-												console.log(err);
-												req.flash('danger', 'Failed to load courses associated to this user');
-												res.render('index', { loggedIn });
-											} else {
-												currentCourses = courses;
-												req.flash('success', 'Course added successfully!');
-												res.render('courses', { courses, loggedIn });
-											}
-										});
-									}
-								});
-							}
-						} else {
-							req.flash('danger', 'Please enter a valid list of student names!');
+							callback();
+						} else
+							callback('Please enter a valid list of student names!');
+					}, (err) => {
+						if (err) {
+							req.flash('danger', err);
 							res.render('courses', { courses: currentCourses, loggedIn });
+						} else {
+							const newCourse = new Course({
+								name: newCourseName,
+								teacher: currentId,
+								fullName: newFullname,
+								students: newStudents
+							});
+							newCourse.save((err, course, rows) => {
+								if (err) {
+									console.log(err);
+									req.flash('danger', 'Failed to create the course. Please try again!');
+									res.render('courses', { courses: currentCourses, loggedIn });
+								} else {
+									Course.find({ teacher: currentId }, (err, courses) => {
+										if (err) {
+											console.log(err);
+											req.flash('danger', 'Failed to load courses associated to this user');
+											res.render('index', { loggedIn });
+										} else {
+											currentCourses = courses;
+											req.flash('success', 'Course added successfully!');
+											res.render('courses', { courses, loggedIn });
+										}
+									});
+								}
+							});
 						}
-					}
+					});
 				}
 			}
 		});
@@ -446,36 +447,19 @@ app.get('/attendance', ensureLoggedIn, (req, res) => {
 			res.render('index', { loggedIn });
 		} else {
 			currentCourses = courses;
-			Attendance.find({teacher: currentId}, (err, attendances) => {
-				if (err) {
-					req.flash('danger', 'Failed to load attendance registers associated to this user');
-					res.render('index', { loggedIn });
-				} else {
-					currentAttendances = attendances;
-					res.render('attendance', { courses, attendances, loggedIn });
-				}
-			});
+			res.render('attendance', { courses, loggedIn });
 		}
 	});
 });
 
 app.get('/registers', ensureLoggedIn, (req, res) => {
-	Course.find({ teacher: currentId }, (err, courses) => {
+	Attendance.find({ teacher: currentId }, (err, attendances) => {
 		if (err) {
-			console.log(err);
-			req.flash('danger', 'Failed to load courses associated to this user');
+			req.flash('danger', 'Failed to load attendance registers associated to this user');
 			res.render('index', { loggedIn });
 		} else {
-			currentCourses = courses;
-			Attendance.find({teacher: currentId}, (err, attendances) => {
-				if (err) {
-					req.flash('danger', 'Failed to load attendance registers associated to this user');
-					res.render('index', { loggedIn });
-				} else {
-					currentAttendances = attendances;
-					res.render('registers', { courses, attendances, loggedIn });
-				}
-			});
+			currentAttendances = attendances;
+			res.render('registers', { attendances, loggedIn });
 		}
 	});
 });
@@ -483,114 +467,101 @@ app.get('/registers', ensureLoggedIn, (req, res) => {
 app.post('/manageAttendance', ensureLoggedIn, upload.single('picture'), (req, res) => {
 	if (!req.file) {
 		req.flash('danger', 'Please select a picture to submit!');
-		res.render('attendance', { courses: currentCourses, attendances: currentAttendances, loggedIn });
+		res.render('attendance', { courses: currentCourses, loggedIn });
 	} else {
 		const newCourseName = req.body.name.trim();
 		if (newCourseName.length <= 0) {
 			req.flash('danger', 'Please enter a valid course name!');
-			res.render('attendance', { courses: currentCourses, attendances: currentAttendances, loggedIn });
+			res.render('attendance', { courses: currentCourses, loggedIn });
 		} else {
 			const newCourseFullName = `${newCourseName}@${currentId}`;
 			Course.find({ fullName: newCourseFullName }, (err, courses) => {
 				if (err) {
 					console.log(err);
 					req.flash('danger', 'Failed to process the picture. Please try again!');
-					res.render('attendance', { courses: currentCourses, attendances: currentAttendances, loggedIn });
+					res.render('attendance', { courses: currentCourses, loggedIn });
 				} else if (courses.length <= 0) {
 					req.flash('info', 'Such course does NOT exist. NO processing was made');
-					res.render('attendance', { courses: currentCourses, attendances: currentAttendances, loggedIn });
+					res.render('attendance', { courses: currentCourses, loggedIn });
 				} else {
 					const image = Buffer(fs.readFileSync(req.file.path).toString('base64'), 'base64');
 					fs.remove(req.file.path, (err) => {
 						if (err)
 							console.log(err);
 					});
-					var foundStudentNames = [];
-					var studentNames = courses[0].students;
-					var left = studentNames.length;
-					for (const currentStudentName of studentNames) {
+					const foundStudentNames = [];
+					async.each(courses[0].students, (currentStudentName, callback) => {
 						User.find({ name: currentStudentName }, (err, users) => {
 							if (err) {
 								console.log(err);
+								callback();
 							} else if (users.length <= 0) {
-								--left;
+								callback();
 							} else {
-								rekognition.compareFaces(
-									{
-										SimilarityThreshold: 70,
-										TargetImage: { Bytes: image },
-										SourceImage: { Bytes: users[0].image }
-									}, (err, data) => {
-										if (err) {
-											console.log(err);
-										} else {
-											if (data.FaceMatches.length > 0)
-												foundStudentNames.push(currentStudentName);
+								rekognition.compareFaces({
+									SimilarityThreshold: 70,
+									TargetImage: { Bytes: image },
+									SourceImage: { Bytes: users[0].image }
+								}, (err, data) => {
+									if (err) {
+										console.log(err);
+										callback();
+									} else {
+										if (data.FaceMatches.length > 0) {
+											foundStudentNames.push(currentStudentName);
 										}
-										if (--left === 0) {
-											const newLabel = req.body.label.trim();
-											const newAttendanceFullName = `${newLabel}@${newCourseFullName}`;
-											Attendance.find({ fullName: newAttendanceFullName }, (err, attendances) => {
-												if (err) {
-													console.log(err);
-													req.flash('danger', 'Failed to process the picture. Please try again!');
-													res.render('attendance', { courses: currentCourses, attendances: currentAttendances, loggedIn });
-												} else {
-													if (attendances.length <= 0) {
-														const newAttendance = new Attendance({
-															course: newCourseName,
-															label: newLabel,
-															fullName: newAttendanceFullName,
-															students: foundStudentNames,
-															teacher: currentId
-														});
-														newAttendance.save((err, course, rows) => {
-															if (err) {
-																console.log(err);
-																req.flash('danger', 'Failed to process the picture. Please try again!');
-																res.render('attendance', { courses: currentCourses, attendances: currentAttendances, loggedIn });
-															} else {
-																Attendance.find({teacher: currentId}, (err, attendances) => {
-																	if (err) {
-																		console.log(err);
-																		req.flash('danger', 'Failed to process the picture. Please try again!');
-																		res.render('attendance', { courses: currentCourses, attendances: currentAttendances, loggedIn });
-																	} else {
-																		currentAttendances = attendances;
-																		req.flash('success', `Picture processed successfully under new label (${newLabel})!`);
-																		res.render('attendance', { courses: currentCourses, attendances, loggedIn });
-																	}
-																});
-															}
-														});
-													} else {
-														const combined = Array.from(new Set(foundStudentNames.concat(attendances[0].students)));
-														Attendance.update({ fullName: newAttendanceFullName }, { students: combined }, (err, attendance) => {
-															if (err) {
-																console.log(err);
-																req.flash('danger', 'Failed to process the picture. Please try again!');
-																res.render('attendance', { courses: currentCourses, attendances: currentAttendances, loggedIn });
-															} else {
-																Attendance.find({teacher: currentId}, (err, attendances) => {
-																	if (err) {
-																		req.flash('danger', 'Failed to process the picture. Please try again!');
-																		res.render('attendance', { courses: currentCourses, attendances: currentAttendances, loggedIn });
-																	} else {
-																		currentAttendances = attendances;
-																		req.flash('success', `Picture processed successfully under existing label (${newLabel})!`);
-																		res.render('attendance', { courses: currentCourses, attendances, loggedIn });
-																	}
-																});
-															}
-														});
-													}
-												}
-											});
-										}
-									});
+										callback();
+									}
+								});
 							}
 						});
-					}
+					}, (err) => {
+						if (err)
+							console.log(err);
+						else {
+							const newLabel = req.body.label.trim();
+							const newAttendanceFullName = `${newLabel}@${newCourseFullName}`;
+							Attendance.find({ fullName: newAttendanceFullName }, (err, attendances) => {
+								if (err) {
+									console.log(err);
+									req.flash('danger', 'Failed to process the picture. Please try again!');
+									res.render('attendance', { courses: currentCourses, loggedIn });
+								} else {
+									if (attendances.length <= 0) {
+										const newAttendance = new Attendance({
+											course: newCourseName,
+											label: newLabel,
+											fullName: newAttendanceFullName,
+											students: foundStudentNames,
+											teacher: currentId
+										});
+										newAttendance.save((err, course, rows) => {
+											if (err) {
+												console.log(err);
+												req.flash('danger', 'Failed to process the picture. Please try again!');
+												res.render('attendance', { courses: currentCourses, loggedIn });
+											} else {
+												req.flash('success', `Picture processed successfully under new label (${newLabel})!`);
+												res.render('attendance', { courses: currentCourses, loggedIn });
+											}
+										});
+									} else {
+										const combined = Array.from(new Set(foundStudentNames.concat(attendances[0].students)));
+										Attendance.update({ fullName: newAttendanceFullName }, { students: combined }, (err, attendance) => {
+											if (err) {
+												console.log(err);
+												req.flash('danger', 'Failed to process the picture. Please try again!');
+												res.render('attendance', { courses: currentCourses, loggedIn });
+											} else {
+												req.flash('success', `Picture processed successfully under existing label (${newLabel})!`);
+												res.render('attendance', { courses: currentCourses, loggedIn });
+											}
+										});
+									}
+								}
+							});
+						}
+					});
 				}
 			});
 		}

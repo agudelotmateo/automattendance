@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "async": "^2.6.1",
     "aws-sdk": "^2.250.1",
     "body-parser": "^1.18.3",
     "connect-ensure-login": "^0.1.1",
