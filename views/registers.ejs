@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<% include partials/head.ejs %>
+
+<body>
+
+    <% include partials/navbar.ejs %>
+
+    <div class="contenido_ggral">
+  
+        <div class="encabezado_asis">
+            <div class="ico_asis_perfil">
+            </div>
+            <div class="tit_asis_ppal">
+               <span class="titulo_content">Registros:</span><br>
+            </div>
+        </div>          
+         
+        <div>   
+            <div class="caja_central_registros"> 
+
+                <table>
+                    <tr>
+                        <th>Course</th>
+                        <th>Label</th>
+                        <th>Date</th>
+                        <th>Students</th>
+                    </tr>
+                    <% for (const attendance of attendances) { %>
+                        <tr>
+                            <td><%= attendance.course %></td>
+                            <td><%= attendance.label %></td>
+                            <td><%= attendance.date %></td>
+                            <td>
+                                <ul>
+                                    <% for (const student of attendance.students) { %>
+                                        <li> <%= student %> </li>                            
+                                    <% } %>
+                                </ul>
+                            </td>
+                        </tr>
+                    <% } %>
+                </table>           
+           
+                <br><br><br><br>           
+                <div></div>
+            </div>
+        </div>        
+    </div> 
+
+    <% include partials/bootstrap.ejs %>
+
+    <% include partials/footer.ejs %>
+
+</body>
+
+</html>

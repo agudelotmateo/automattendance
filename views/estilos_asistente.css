@@ -70,7 +70,7 @@ body{
     background-color: #55CAAA !important;
 	padding-left: 5px !important;
 	}
-	
+
 .nav-link:hover{
 	color: #FFFFB3 !important;
 	background-color: #55CAAA !important;
@@ -115,14 +115,14 @@ body{
 	padding-left: 20px;
 	clear: both;
 	}
-	
+
 .titulo_content{
 	font-size: 40px;
 	color: #4E4E4E;
 	text-decoration: none;
 	text-align: left;
 	}
-	
+
 .subtitulo{
 	font-size: 15px;
 	color: #4E4E4E;
@@ -166,7 +166,7 @@ body{
 	padding-bottom: 30px;
 	padding-left: 40px;
 	}
-	
+
 .campo_captura{
 	padding: 5px;
 	height: 37px;
@@ -216,7 +216,7 @@ body{
 	background-position: left center;
 	float: left;
 	height: 55px;
-	width: 60px;	
+	width: 60px;
 	}
 
 
@@ -226,7 +226,7 @@ body{
 	background-position: left center;
 	float: left;
 	height: 55px;
-	width: 60px;	
+	width: 60px;
 	}
 
 .ico_asis_cursos{
@@ -235,16 +235,16 @@ body{
 	background-position: left center;
 	float: left;
 	height: 55px;
-	width: 60px;	
+	width: 60px;
 	}
-	
+
 .ico_asis_buscar{
 	background-image: url(img/buscador.png);
 	background-repeat: no-repeat;
 	background-position: left center;
 	float: left;
 	height: 55px;
-	width: 60px;	
+	width: 60px;
 	}
 
 .grande{
@@ -281,32 +281,39 @@ body{
 	padding-left: 40px;
 	overflow: hidden;
 	}
-	
+
+.alert-danger {
+	width: 50%;
+	margin-top: auto;
+	margin-right: auto;
+	margin-bottom: auto;
+	margin-left: auto;
+}
+
+.alert-success {
+	width: 50%;
+	margin-top: auto;
+	margin-right: auto;
+	margin-bottom: auto;
+	margin-left: auto;
+}
+
 .alert-info {
 	color: #0c5460;
 	background-color: #d1ecf1;
 	border-color: #bee5eb;
 	width: 50%;
-	margin-top: 100px;
+	margin-top: auto;
 	margin-right: auto;
-	margin-bottom: 100px;
+	margin-bottom: auto;
 	margin-left: auto;
 }
-
-
-
-
-
-/* *************************************** 
-TODO ESTO DEBE COPIARSE PARA RESPONSIVE 
-****************************************** */
 
 
 .titulo_caja{
 	font-weight: bold;
 }
 
-/* En base a estilo .campo_captura */
 .select_atta {
 	height: 37px;
 	width: 100%;
@@ -332,12 +339,34 @@ TODO ESTO DEBE COPIARSE PARA RESPONSIVE
 	color: rgb(134, 134, 134);
 }
 
-/* HASTA ACÁ SE COPIA */
+.dropdown {
+	margin-top: 10px;
+	margin-bottom: 15px;
+}
 
+.caja_central_registros{
+	background-color: #F9F8F3;
+	margin: auto;
+	width: 90%;
+	border: 1px solid #EAE7D5;
+	padding-top: 30px;
+	padding-right: 40px;
+	padding-bottom: 30px;
+	padding-left: 40px;
+	overflow: auto;
+}
 
+table {
+	border-collapse: collapse;
+	width: 100%;
+}
 
+tr:nth-child(even) {background-color: #e6e6e6;}
 
-
+th, td {
+    padding: 10px;
+	vertical-align: middle;
+}
 
 @media(max-width:767px){
 
@@ -389,7 +418,7 @@ body{
     background-color: #55CAAA !important;
 	padding-left: 5px !important;
 	}
-	
+
 .nav-link:hover{
 	color: #FFFFB3 !important;
 	background-color: #55CAAA !important;
@@ -434,14 +463,14 @@ body{
 	padding-left: 10px;
 	clear: both;
 	}
-	
+
 .titulo_content{
 	font-size: 30px;
 	color: #4E4E4E;
 	text-decoration: none;
 	text-align: left;
 	}
-	
+
 .subtitulo{
 	font-size: 15px;
 	color: #4E4E4E;
@@ -486,7 +515,7 @@ body{
 	padding-left: 20px;
 	}
 
-	
+
 .campo_captura{
 	padding: 5px;
 	height: 37px;
@@ -551,7 +580,7 @@ body{
 	float: left;
 	height: 28px;
 	width: 35px;
-	margin-top: 10px;	
+	margin-top: 10px;
 	}
 
 .ico_asis_cursos{
@@ -563,7 +592,7 @@ body{
 	width: 35px;
 	margin-top: 10px;
 	}
-	
+
 .ico_asis_buscar{
 	background-image: url(img/buscador_mov.png);
 	background-repeat: no-repeat;
@@ -571,7 +600,7 @@ body{
 	float: left;
 	height: 28px;
 	width: 35px;
-	margin-top: 10px;	
+	margin-top: 10px;
 	}
 
 .grande{
@@ -601,6 +630,19 @@ body{
 	padding-top: 15px;
 	}
 
+.titulo_caja{
+	font-weight: bold;
+}
+
+.select_atta {
+	height: 37px;
+	width: 100%;
+	margin-top: 10px;
+	margin-bottom: 15px;
+	border-radius: 5px 5px 5px 5px;
+	-webkit-border-radius:  5px 5px 5px 5px;
+}
+
 .caja_central_buscar{
 	background-color: #F9F8F3;
 	margin: auto;
@@ -611,17 +653,79 @@ body{
 	padding-bottom: 30px;
 	padding-left: 40px;
 	overflow: hidden;
-	}
-	
+}
+
+.alert-danger {
+	width: 90%;
+	margin-top: auto;
+	margin-right: auto;
+	margin-bottom: auto;
+	margin-left: auto;
+}
+
+.alert-success {
+	width: 90%;
+	margin-top: auto;
+	margin-right: auto;
+	margin-bottom: auto;
+	margin-left: auto;
+}
+
 .alert-info {
 	color: #0c5460;
 	background-color: #d1ecf1;
 	border-color: #bee5eb;
 	width: 90%;
-	margin-top: 100px;
+	margin-top: auto;
 	margin-right: auto;
-	margin-bottom: 100px;
+	margin-bottom: auto;
 	margin-left: auto;
 }
+
+.img_perfil {
+	margin: auto;
+	width: 20%;
+	padding-bottom: 20px;
+}
+
+.img_perfil img {
+	width: 100%;
+    height: auto;
+}
+
+.explicacion_pequeña {
+	font-size: 12px;
+	color: rgb(134, 134, 134);
+}
+
+.dropdown {
+	margin-top: 10px;
+	margin-bottom: 15px;
+}
+
+.caja_central_registros{
+	background-color: #F9F8F3;
+	margin: auto;
+	width: 90%;
+	border: 1px solid #EAE7D5;
+	padding-top: 30px;
+	padding-right: 5px;
+	padding-bottom: 30px;
+	padding-left: 5px;
+	overflow: auto;
+}
+
+table {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+tr:nth-child(even) {background-color: #e6e6e6;}
+
+th, td {
+    padding: 10px;
+	vertical-align: middle;
+}
+
 
 }

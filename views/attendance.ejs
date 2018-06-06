@@ -22,15 +22,21 @@
 
                 <span class="titulo_caja">Tomar asistencia:</span><br><br>
            
-                <form action="/manageAttendance" method="POST" enctype="multipart/form-data">           
+                <form action="/manageAttendance" method="POST" enctype="multipart/form-data" id="attendance_form">           
                     <span>Curso:</span><br>
-
-                    <!-- cambiar, debe ser dropdown list con lista de cursos -->
-                    <input class="campo_captura" type="text" name="name" id="coursename"><br>               
+                    <div class="dropdown">
+                        <select name="name" id="coursename">
+                            <% for (const course of courses) { %>
+                                <option value="<%= course.name %>">
+                                    <%= course.name %>
+                                </option>
+                            <% } %>
+                        </select>
+                    </div>            
                     
                     <span>Etiqueta registro:</span><br>
                     <span class="explicacion_pequeña">Si la etiqueta ya fue utilizada, 
-                        solo se añadiran las personas presentes en la nueva foto a las anteriormente registradas.</span><br>
+                        solo se añadiran las personas presentes en la nueva foto al registro anterior.</span><br>
                     <input class="campo_captura" type="text" name="label" id="picturelabel"><br>   
                     
                     <span>Foto:</span><br>
@@ -46,41 +52,6 @@
            <div></div>
         </div>        
     </div> 
-
-
-    <!-- <h3>List of courses</h3>
-    <ul>
-        <% for (const course of courses) { %>
-            <li>
-                <%= course.name %>
-             </li>
-        <% } %>
-    </ul>
-
-    
-    <h3>Attendances</h3>
-    <table>
-        <tr>
-            <th>Course</th>
-            <th>Label</th>
-            <th>Date</th>
-            <th>Students</th>
-        </tr>
-        <% for (const attendance of attendances) { %>
-            <tr>
-                <td><%= attendance.course %></td>
-                <td><%= attendance.label %></td>
-                <td><%= attendance.date %></td>
-                <td>
-                    <ul>
-                        <% for (const student of attendance.students) { %>
-                            <li> <%= student %> </li>                            
-                        <% } %>
-                    </ul>
-                </td>
-            </tr>
-        <% } %>
-    </table> -->
 
     <% include partials/bootstrap.ejs %>
 
