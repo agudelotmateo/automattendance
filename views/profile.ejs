@@ -30,7 +30,7 @@
 
                 <form action="/updateUser" method="POST" enctype="multipart/form-data"> 
                     <span>Nombre:</span><br>
-                    <input class="campo_captura" type="text" name="name" id="username" value=<%= name %>> <br>                    
+                    <input class="campo_captura" type="text" name="name" id="username" maxlength="20" value=<%= name %>> <br>                    
                     <span>Foto:</span><br>
                     <input class="select_atta" type="file" name="picture" id="picture" accept="application/x-zip-compressed,image/*">
                     <br><br><br>
