@@ -277,7 +277,7 @@ Modificar en responsive
 }
 
 .caja_central_buscar{
-	background-color: #F9F8F3;
+	background-color: #F9F8F3; 
 	margin: auto;
 	width: 90%;
 	border: 1px solid #EAE7D5;
@@ -344,6 +344,12 @@ Nuevo para responsive
 
 .contenido_caja_home {
 	text-align: center;
+}
+
+.separador_navbar {
+	height: 25px;
+	width: 960px;  /* de contenido general */
+	background-color: #FFF;
 }
 
 /* hasta acá es nuevo */
