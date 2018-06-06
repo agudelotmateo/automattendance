@@ -104,17 +104,23 @@ body{
 	width: 960px;
 }
 
-.contenido_ggral{
+/* *************************************
+Modificar en responsive 
+*************************************** */
+
+.contenido_ggral {
 	background-color: #FFF;
 	width: 960px;
 	overflow: hidden;
 	margin: auto;
-	padding-top: 40px;
+	padding-top: 25px; /* 40 -> 25 */
 	padding-right: 20px;
 	padding-bottom: 40px;
 	padding-left: 20px;
 	clear: both;
 }
+
+/* Hasta acá la modificación */
 
 .titulo_content{
 	font-size: 40px;
@@ -451,7 +457,7 @@ body{
 	margin: auto;
 	width: 100%;
 	overflow: hidden;
-	}
+}
 
 .fin_pagina{
 	font-family: 'RobotoCondensed-Regular', sans-serif;
