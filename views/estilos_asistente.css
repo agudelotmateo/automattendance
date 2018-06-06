@@ -330,9 +330,23 @@ Cambios para responsive
 
 /* hasta acá hay cambios */
 
-.titulo_caja{
+.titulo_caja {
 	font-weight: bold;
 }
+
+/* ****************************
+Nuevo para responsive 
+******************************* */
+
+.titulo_caja_home {
+	text-align: center;
+}
+
+.contenido_caja_home {
+	text-align: center;
+}
+
+/* hasta acá es nuevo */
 
 .select_atta {
 	height: 37px;
