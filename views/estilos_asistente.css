@@ -505,7 +505,7 @@ th, td {
 		width: 100%;
 		overflow: hidden;
 		margin: auto;
-		padding-top: 25px;
+		padding-top: 15px;
 		padding-right: 10px;
 		padding-bottom: 10px;
 		padding-left: 10px;
@@ -691,7 +691,7 @@ th, td {
 	}
 	
 	.separador_navbar {
-		height: 25px;
+		height: 15px;
 		width: 100%;  /* de contenido general */
 		background-color: #FFF;
 	}
