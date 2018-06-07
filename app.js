@@ -364,10 +364,10 @@ app.post('/createCourse', ensureLoggedIn, (req, res) => {
 						const cleanNewStudentName = getName(newStudentName);
 						if (cleanNewStudentName.length > 0) {
 							if (cleanNewStudentName.length > 20) {
-								callback('Please use names with lenght smaller than 20 characters!')
+								callback('Please use names with a length of 20 characters at most!');
 							} else {
-							newStudents.push(cleanNewStudentName);
-							callback();
+								newStudents.push(cleanNewStudentName);
+								callback();
 							}
 						} else
 							callback('Please enter a valid list of student names!');
