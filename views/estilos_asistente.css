@@ -338,6 +338,8 @@ body{
 	height: 25px;
 	width: 960px;
 	background-color: #FFF;
+	overflow: hidden;
+	margin: auto;
 }
 
 .select_atta {
