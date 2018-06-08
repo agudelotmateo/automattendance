@@ -27,13 +27,21 @@ A few other things to keep in mind:
 
 Then it's pretty simple: 
 
-> $ git clone https://github.com/agudelotmateo/automattendance.git
+- Download the files
 
-> $ cd automattendance
+    > $ git clone https://github.com/agudelotmateo/automattendance.git
 
-> npm install
+- Change directory to the downloaded files folder
 
-> npm start
+    > $ cd automattendance
+
+- Install the required dependencies (automatically)
+
+    > $ npm install
+
+- Run the application
+
+    > $ npm start
 
 
 
