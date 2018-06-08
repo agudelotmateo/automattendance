@@ -28,9 +28,13 @@ A few other things to keep in mind:
 Then it's pretty simple: 
 
 > $ git clone https://github.com/agudelotmateo/automattendance.git
+
 > $ cd automattendance
+
 > npm install
+
 > npm start
+
 
 
 ## Development process
