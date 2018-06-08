@@ -9,6 +9,29 @@
 The main technologies used in the development of this application are [Node.js v8.11.2](https://nodejs.org/en/) for the server-side logic, [MongoDB](https://www.mongodb.com/) for the data persistance, [EJS](http://ejs.co/) for the front end, [Auth0](https://auth0.com/) for the authentication, [Amazon Rekognition](https://aws.amazon.com/rekognition/) for the face recognition and [Heroku](https://www.heroku.com/) and [mLab](https://mlab.com/) for the deployment.
 
 
+## Running locally
+
+First things first: you must properly set the following environment variables:
+
+- AWS_ACCESS_KEY_ID
+- AWS_SECRET_ACCESS_KEY
+- MLAB_DB_USER
+- MLAB_DB_PASSWORD
+- AUTH0_SECRET
+
+A few other things to keep in mind:
+
+- The AWS credentials need access to Amazon Rekognition (only)
+- The MongoDB database at mLat must be named `automattendance`
+- The Auth0 callback URLs must be set accordingly
+
+Then it's pretty simple: 
+
+> $ git clone https://github.com/agudelotmateo/automattendance.git
+> $ cd automattendance
+> npm install
+> npm start
+
 
 ## Development process
 
